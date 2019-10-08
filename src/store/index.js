@@ -22,13 +22,13 @@ export default new Vuex.Store({
         .filter(words => words.length < 2 ||
           _.chain(words).map('courses').flatten().map('course').uniq().value().length > 1)
         .map(words => {
+          let ranks = _.chain(words).map('rank').sortBy().value()
+          let years = _.chain(words).map('year').sortBy().value()
           const source = {
-            id: words[0].word,
-            count: words.length,
-            ranks: _.map(words, 'rank'),
-            years: _.map(words, 'year'),
+            id: words[0].word, count: words.length,
+            ranks, years,
+            medianRank: d3.median(ranks), medianYear: d3.median(years),
           }
-          // console.log(_.chain(words).map('word').uniq().value(), _.chain(words).map('courses').flatten().groupBy('course').value())
 
           _.chain(words).map('courses').flatten()
             .sortBy(d => -d.year)
@@ -38,11 +38,15 @@ export default new Vuex.Store({
                 classes[course] = {
                   id: course, title,
                   count: 0,
+                  years: [],
+                  medianYear: year,
                 }
               }
 
               const target = classes[course]
               target.count += 1
+              target.years.push(year)
+              target.medianYear = d3.median(_.sortBy(target.years))
 
               // and remember the link
               const key = `${source.id},${target.id}`
