@@ -9,6 +9,16 @@ export default {
   mounted() {
     this.calculateData()
   },
+  computed: {
+    galaxies() {
+      return this.$store.getters.galaxies
+    }
+  },
+  watch: {
+    galaxies() {
+      this.calculateData()
+    }
+  },
   methods: {
     calculateData() {
     }
