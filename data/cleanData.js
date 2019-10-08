@@ -58,21 +58,20 @@ classes = _.map(classes, ({title, year, id, instructor, catalog_number, credits,
   }))
 
 words = _.chain(words)
-  .map((words, rank) => {
-    return _.map(words, (word, year) => {
-      if (!word || year === 'order') return
-      const id = `${word},${year}`
-      const courses = _.filter(classes, d => d.year === +year &&
-        _.includes(d.description.toLowerCase(), word))
-      // go through those classes and remember the word
-      _.each(courses, d => d.words.push(id))
+  .map(({word, year, rank, type}) => {
+    if (!word || year === 'order') return
+    const id = `${word},${year}`
+    const courses = _.filter(classes, d => d.year === +year &&
+      _.includes(d.description.toLowerCase(), word))
+    // go through those classes and remember the word
+    _.each(courses, d => d.words.push(id))
 
-      return {
-        id, word, year: +year, rank: +rank + 1,
-        courses: _.map(courses, 'id')
-      }
-    })
-  }).flatten().filter().value()
+    return {
+      id, word, year, rank,
+      type: type.toLowerCase(),
+      courses: _.map(courses, 'id')
+    }
+  }).filter().value()
 
 
 fs.writeFileSync('./public/classes.json', JSON.stringify(classes))
