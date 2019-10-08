@@ -6,8 +6,8 @@
           :x2='d.target.x' :y2='d.target.y' stroke='#999' /> -->
         <circle v-for='d in planets' :cx='d.x' :cy='d.y' :r='d.r'
           fill='#fff' stroke='#333' stroke-width='2' />
-        <text v-for='d in stars' :x='d.x' :y='d.y' :style='{fontSize: `${5 * d.r}px`}'
-          text-anchor='middle' dy='.35em' fill='#333'>*</text>
+        <path v-for='d in stars' :d='d.path' fill='none' stroke='#333' :stroke-width='2 / d.r'
+          :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
       </svg>
     </div>
   </div>
@@ -50,7 +50,7 @@ export default {
     },
     radiusScale() {
       const domain = d3.extent(this.nodes, d => d.count)
-      return d3.scaleSqrt().domain(domain).range([3, 10])
+      return d3.scaleSqrt().domain(domain).range([5, 15])
     },
   },
   watch: {
@@ -84,12 +84,14 @@ export default {
 
         const stars = _.chain(words)
           .sortBy(d => -d.count)
-          .map(({medianRank, medianYear, count, id}) => {
+          .map(({medianRank, medianYear, count, id, type}) => {
             const x = this.xScale(medianYear)
             const y = this.yScale(medianRank)
             return {
               id, x, y, forceX: x, forceY: y,
               r: this.radiusScale(count),
+              path: type === 'tech' ? this.starPath() : '',
+              rotate: _.random(180),
             }
           }).value()
 
@@ -98,7 +100,25 @@ export default {
 
         return {planets, stars}
       })
-    }
+    },
+    starPath() {
+      const outerRadius = 1
+      const innerRadius = 0.5
+      let path = ''
+      _.times(10, i => {
+        const radius = i % 2 ? outerRadius : innerRadius
+        const angle = i * (Math.PI / 5)
+        const command = i === 0 ? 'M' : 'L'
+        const x = _.round(radius * Math.cos(angle), 2)
+        const y = _.round(radius * Math.sin(angle), 2)
+
+        path += `${command} ${x},${y}`
+      })
+      return `${path}Z`
+    },
+    asteriskPath() {
+
+    },
   }
 }
 </script>

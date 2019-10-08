@@ -25,7 +25,7 @@ export default new Vuex.Store({
           let years = _.chain(words).map('year').sortBy().value()
           const source = {
             id: words[0].word, count: words.length,
-            ranks, years,
+            type: words[0].type, ranks, years,
             medianRank: d3.median(ranks), medianYear: d3.median(years),
           }
 
