@@ -19,7 +19,7 @@ export default new Vuex.Store({
       words = _.chain(words)
         .groupBy(d => d.word)
         // only want words connected to two or more classes
-        .filter(words => words.length < 2 ||
+        .filter(words => (words[0].type === 'tech' || words[0].type === 'person') &&
           _.chain(words).map('courses').flatten().map('course').uniq().value().length > 1)
         .map(words => {
           let ranks = _.chain(words).map('rank').sortBy().value()
@@ -65,11 +65,28 @@ export default new Vuex.Store({
 
       // now go through all links and put words, classes, and links in their own galaxies
       let galaxyId = 1
-      const galaxies = []
+      let galaxies = []
       const galaxiesByNode = {} // key: nodes, value: galaxy
       _.each(links, (link) => {
         const {source, target} = link
         let galaxy = galaxiesByNode[source.id] || galaxiesByNode[target.id]
+        if (galaxiesByNode[source.id] && galaxiesByNode[target.id] &&
+          galaxiesByNode[source.id] !== galaxiesByNode[target.id]) {
+          // if they both exist already and they're not the same galaxy
+          // then move everything in one galaxy into the other
+          const galaxy2 = galaxiesByNode[target.id]
+          _.each(galaxy2.words, source => {
+            galaxy.words.push(source)
+            galaxiesByNode[source.id] = galaxy
+          })
+          _.each(galaxy2.classes, target => {
+            galaxy.classes.push(target)
+            galaxiesByNode[target.id] = galaxy
+          })
+          galaxy.links = _.union(galaxy.links, galaxy2.links)
+          // and then delete the galaxy
+          galaxies = _.without(galaxies, galaxy2)
+        }
 
         if (!galaxy) {
           // if galaxy doesn't exist, create it
@@ -99,8 +116,9 @@ export default new Vuex.Store({
         galaxy.links.push(link)
       })
 
+      console.log(galaxies)
       return _.chain(galaxies)
-        .filter(d => d.classes.length > 1 && d.classes.length < d.words.length)
+        .filter(d => d.classes.length > 1)
         .sortBy(d => -d.links.length)
         .value()
     }
