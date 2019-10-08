@@ -60,7 +60,7 @@ classes = _.map(classes, ({title, year, id, instructor, catalog_number, credits,
 words = _.chain(words)
   .map((words, rank) => {
     return _.map(words, (word, year) => {
-      if (!word) return
+      if (!word || year === 'order') return
       const id = `${word},${year}`
       const courses = _.filter(classes, d => d.year === +year &&
         _.includes(d.description.toLowerCase(), word))
