@@ -46,7 +46,9 @@ _.each(coursesByID, (classes, id) => {
   })
 })
 
-classes = _.map(classes, ({title, year, id, instructor, catalog_number, credits, description}) =>
+classes = _.map(classes, ({
+  title, year, id, instructor, catalog_number,
+  credits, description, kmeans_20_groups}) =>
   Object.assign({}, {
     id: `${id},${year}`,
     course: id,
@@ -55,6 +57,7 @@ classes = _.map(classes, ({title, year, id, instructor, catalog_number, credits,
     credits: +(credits.replace(/ points?/, '')),
     year: +year,
     words: [],
+    group: kmeans_20_groups,
   }))
 
 words = _.chain(words)
