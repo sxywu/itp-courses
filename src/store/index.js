@@ -9,6 +9,7 @@ export default new Vuex.Store({
   state: {
     classes: [],
     words: [],
+    galaxy: null, // selected galaxy
   },
   getters: {
     galaxies({words}) {
@@ -112,6 +113,11 @@ export default new Vuex.Store({
       const domain = d3.extent(nodes, d => d.count)
       return d3.scaleSqrt().domain(domain).range([5, 15])
     },
+    // for getting the raw data version
+    classesForGalaxy({galaxy, classes}) {
+      const classesByCourse = _.groupBy(classes, 'course')
+      return _.map(galaxy.classes, ({id}) => classesByCourse[id])
+    },
   },
   mutations: {
     setClasses(state, classes) {
@@ -119,6 +125,9 @@ export default new Vuex.Store({
     },
     setWords(state, words) {
       state.words = words
+    },
+    setGalaxy(state, galaxy) {
+      state.galaxy = galaxy
     },
   },
   actions: {

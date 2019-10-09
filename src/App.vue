@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <Galaxy v-for='galaxy in galaxies' v-bind='{galaxy, radiusScale}' />
+    <Galaxy v-if='!selectedGalaxy' v-for='galaxy in galaxies' v-bind='{galaxy}' />
+    <Detail v-if='selectedGalaxy' />
+
     <!-- HOVER -->
     <div v-if='hovered' class='hovered' :style='{
       top: `${hovered.y}px`,
@@ -15,10 +17,11 @@
 import * as d3 from 'd3'
 import _ from 'lodash'
 import Galaxy from './components/Galaxy.vue'
+import Detail from './components/Detail.vue'
 
 export default {
   name: 'app',
-  components: {Galaxy},
+  components: {Galaxy, Detail},
   data() {
     return {
       hovered: null,
@@ -31,6 +34,8 @@ export default {
     galaxies() {
       return this.$store.getters.galaxies
     },
+    selectedGalaxy() {
+      return this.$store.state.galaxy
     },
   },
 }
