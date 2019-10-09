@@ -3,14 +3,14 @@
     <svg :width='width' :height='height'>
       <!-- PLANETS -->
       <g v-for='d in planets' :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'>
-        <path :d='d.path' fill='#fff' stroke='#333' :stroke-width='2 / d.r' />
+        <path :d='d.path' fill='#fff' stroke='#333' :stroke-width='0.75 / d.r' />
         <!-- planet's ring -->
         <path v-if='d.ring' d='M1,0 A1.25,0.25 0 1 1 -1,0'
           fill='none' stroke='#333' :stroke-width='2 / d.r' />
       </g>
       <!-- STARS -->
       <path v-for='d in stars' :d='d.path'
-        :fill='d.fill ? `#333` : `#fff`' stroke='#333' :stroke-width='2 / d.r'
+        :fill='d.fill ? `#333` : `#fff`' stroke='#333' :stroke-width='1.5 / d.r'
         :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
     </svg>
     <div class='title'>{{ title }}</div>
@@ -20,6 +20,7 @@
 <script>
 import * as d3 from 'd3'
 import _ from 'lodash'
+import p5 from 'p5'
 
 const width = 400 // 40 years
 const height = 200 // 50 ranks
@@ -86,7 +87,7 @@ export default {
           const y = this.yScale(medianRank)
           return {
             id, x, y, forceX: x, forceY: y,
-            r: type !== 'thing' ? this.radiusScale(count) : 1.5,
+            r: type !== 'thing' ? this.radiusScale(count) : 2,
             path: type === 'tech' ? this.starPath() :
               (type === 'person' ? this.asteriskPath() : this.circlePath()),
             rotate: _.random(180),
@@ -103,12 +104,12 @@ export default {
       const outerRadius = 1
       const innerRadius = 0.5
       let path = ''
-      _.times(10, i => {
+      _.times(30, i => {
         const radius = i % 2 ? outerRadius : innerRadius
         const angle = i * (Math.PI / 5)
         const command = i === 0 ? 'M' : 'L'
-        const x = _.round(radius * Math.cos(angle), 2)
-        const y = _.round(radius * Math.sin(angle), 2)
+        const x = p5.prototype.randomGaussian(radius * Math.cos(angle), 0.05)
+        const y = p5.prototype.randomGaussian(radius * Math.sin(angle), 0.05)
 
         path += `${command} ${x},${y}`
       })
@@ -116,8 +117,8 @@ export default {
     },
     asteriskPath() {
       let path = ''
-      _.times(3, i => {
-        let angle = i * (Math.PI / 1.5)
+      _.times(12, i => {
+        let angle = p5.prototype.randomGaussian(i * (Math.PI / 4), 0.1)
         path += `
           M${_.round(Math.cos(angle), 2)},${_.round(Math.sin(angle), 2)}
           L${_.round(Math.cos(angle + Math.PI), 2)},${_.round(Math.sin(angle + Math.PI), 2)}`
@@ -129,8 +130,8 @@ export default {
       let path = ''
       _.times(11, i => {
         const angle = i * (Math.PI / 5)
-        const x = _.round(Math.cos(angle), 2)
-        const y = _.round(Math.sin(angle), 2)
+        const x = p5.prototype.randomGaussian(Math.cos(angle), 0.03)
+        const y = p5.prototype.randomGaussian(Math.sin(angle), 0.03)
 
         if (i === 0) {
           path += `M${x},${y}`
