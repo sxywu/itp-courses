@@ -2,7 +2,9 @@
   <div id="overview">
     <div class='galaxy' v-for='{planets, stars, lines, title} in groups'>
       <svg :width='width' :height='height'>
-        <g v-for='d in planets' :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'>
+        <!-- PLANETS -->
+        <g v-for='d in planets' :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'
+          @mouseenter='hovered = d' @mouseleave='hovered = null'>
           <path :d='d.path' fill='#fff' stroke='#333' :stroke-width='2 / d.r' />
           <!-- planet's ring -->
           <path v-if='d.ring' d='M1,0 A1.25,0.25 0 1 1 -1,0'
@@ -10,11 +12,20 @@
           <!-- <path v-if='d.numRings > 1' d='M1,0 A1.25,0.25 0 1 1 -1,0'
             transform='scale(1.25,1.5)' fill='none' stroke='#333' :stroke-width='1.5 / d.r' /> -->
         </g>
+        <!-- STARS -->
         <path v-for='d in stars' :d='d.path'
           :fill='d.fill ? `#333` : `#fff`' stroke='#333' :stroke-width='2 / d.r'
-          :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
+          :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'
+          @mouseenter='hovered = d' @mouseleave='hovered = null' />
       </svg>
       <div class='title'>{{ title }}</div>
+    </div>
+    <!-- HOVER -->
+    <div v-if='hovered' class='hovered' :style='{
+      top: `${hovered.y}px`,
+      left: `${hovered.x + hovered.r + 20}px`,
+      }'>
+      {{ hovered.label }}
     </div>
   </div>
 </template>
@@ -32,6 +43,7 @@ export default {
     return {
       groups: [],
       width, height,
+      hovered: {},
     }
   },
   mounted() {
@@ -79,7 +91,7 @@ export default {
 
         const planets = _.chain(classes)
           .sortBy(d => -d.count)
-          .map(({medianYear, count, id}, i) => {
+          .map(({medianYear, count, id, title}, i) => {
             const x = this.xScale(medianYear)
             const y = medianY
             return {
@@ -88,6 +100,8 @@ export default {
               path: this.circlePath(),
               rotate: _.random(-30, 30),
               ring: i < (classes.length / 4),
+              // for hover
+              label: title,
             }
           }).value()
 
@@ -103,6 +117,8 @@ export default {
                 (type === 'person' ? this.asteriskPath() : this.circlePath()),
               rotate: _.random(180),
               fill: type === 'thing',
+              // for hover
+              label: id,
             }
           }).value()
 
@@ -175,5 +191,14 @@ svg {
   padding-bottom: 10px;
   text-align: right;
   font-weight: bold;
+}
+
+.hovered {
+  position: absolute;
+  background: #fff;
+  padding: 0px 5px;
+  box-shadow: 0 0 5px #cfcfcf;
+  font-size: 12px;
+  pointer-events: none;
 }
 </style>
