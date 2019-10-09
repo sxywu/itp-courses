@@ -12,6 +12,8 @@
             <tspan v-if='d.year1 !== d.year2'> - {{ d.year2 }}</tspan></text>
         </g>
       </g>
+      <!-- axis -->
+      <g ref='xAxis' :transform='`translate(0, ${axisY})`' />
       <!-- bottom half: line chart of words -->
     </svg>
   </div>
@@ -32,12 +34,15 @@ export default {
       width: window.innerWidth,
       height: window.innerHeight,
       planets: [],
+      axisY: 0,
     }
   },
   mounted() {
     this.xScale = d3.scaleLinear().range([margin.left, this.width - margin.right])
+    this.xAxis = d3.axisBottom().tickFormat(d => d).tickSizeOuter(0)
 
     this.calculateData()
+    this.renderAxis()
   },
   computed: {
     galaxy() {
@@ -53,6 +58,7 @@ export default {
   watch: {
     classes() {
       this.calculateData()
+      this.renderAxis()
     },
   },
   methods: {
@@ -87,6 +93,12 @@ export default {
         .map((d, i) => Object.assign(d, {
           planet: Object.assign(d.planet, {ring: i < (this.classes.length / 4)})
         })).value()
+
+        this.axisY = y += margin.bottom
+    },
+    renderAxis() {
+      this.xAxis.scale(this.xScale)
+      d3.select(this.$refs.xAxis).call(this.xAxis)
     },
   }
 }
