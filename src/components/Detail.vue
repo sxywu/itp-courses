@@ -3,11 +3,14 @@
     <svg :width='width' :height='height'>
       <!-- top half: timeline of classes -->
       <g v-for='d in planets' :transform='`translate(0, ${d.y})`'>
+        <circle :cx='d.x2' r='2' fill='#333' />
         <line :x1='d.x1' :x2='d.x2' stroke='#333' stroke-width='2' />
         <Planet v-bind='{d: d.planet}' />
-        <text :x='d.x2 + 5'>{{ d.title }}</text>
-        <text class='years' :x='d.x2 + 5' dy='1em'>
-          {{ d.year1 }} - {{ d.year2 }}</text>
+        <g :transform='`translate(${d.x2 + 10}, 0)`'>
+          <text>{{ d.title }}</text>
+          <text class='years' dy='1em'>{{ d.year1 }}
+            <tspan v-if='d.year1 !== d.year2'> - {{ d.year2 }}</tspan></text>
+        </g>
       </g>
       <!-- bottom half: line chart of words -->
     </svg>
@@ -66,21 +69,24 @@ export default {
           const x = this.xScale(min)
           const count = _.sumBy(classes, d => d.words.length)
           const r = this.radiusScale(count)
-          const height = Math.max(2 * r + 10, 30)
+          const height = Math.max(2 * r + 10, 32)
           y += height
 
           return {
             planet: {
               x, y: 0, r,
               rotate: _.random(-30, 30),
-              ring: i < (this.classes.length / 4),
             },
+            x1: x, x2: this.xScale(max),
             y: y - height / 2,
             year1: min, year2: max,
-            x1: x, x2: this.xScale(max),
             title: _.maxBy(classes, 'year').title,
+            count,
           }
-        }).value()
+        }).sortBy(({count}) => -count)
+        .map((d, i) => Object.assign(d, {
+          planet: Object.assign(d.planet, {ring: i < (this.classes.length / 4)})
+        })).value()
     },
   }
 }
