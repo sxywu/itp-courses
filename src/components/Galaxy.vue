@@ -1,17 +1,8 @@
 <template>
-  <div class='galaxy'>
+  <div class='galaxy' @click='$store.commit(`setGalaxy`, galaxy)'>
     <svg :width='width' :height='height'>
-      <!-- PLANETS -->
-      <g v-for='d in planets' :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'>
-        <path :d='d.path' fill='#fff' stroke='#333' :stroke-width='0.75 / d.r' />
-        <!-- planet's ring -->
-        <path v-if='d.ring' d='M1,0 A1.25,0.25 0 1 1 -1,0'
-          fill='none' stroke='#333' :stroke-width='2 / d.r' />
-      </g>
-      <!-- STARS -->
-      <path v-for='d in stars' :d='d.path'
-        :fill='d.fill ? `#333` : `#fff`' stroke='#333' :stroke-width='1.5 / d.r'
-        :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
+      <Planet v-for='d in planets' v-bind='{d}' />
+      <Star v-for='d in stars' v-bind='{d}' />
     </svg>
     <div class='title'>{{ title }}</div>
   </div>
@@ -20,14 +11,17 @@
 <script>
 import * as d3 from 'd3'
 import _ from 'lodash'
-import p5 from 'p5'
+
+import Planet from './Planet.vue'
+import Star from './Star.vue'
 
 const width = 400 // 40 years
 const height = 200 // 50 ranks
 const margin = {top: 40, right: 40, bottom: 40, left: 40}
 export default {
   name: 'overview',
-  props: ['galaxy', 'radiusScale'],
+  props: ['galaxy'],
+  components: {Planet, Star},
   data() {
     return {
       planets: [], stars: [],
@@ -45,6 +39,11 @@ export default {
     this.yScale = d3.scaleLinear().range([margin.top, height - margin.bottom])
 
     this.calculateData()
+  },
+  computed: {
+    radiusScale() {
+      return this.$store.getters.radiusScale
+    },
   },
   watch: {
     galaxy() {
@@ -72,11 +71,8 @@ export default {
           return {
             id, x, y, forceX: x, forceY: y,
             r: this.radiusScale(5 * count),
-            path: this.circlePath(),
             rotate: _.random(-30, 30),
             ring: i < (classes.length / 4),
-            // for hover
-            label: title,
           }
         }).value()
 
@@ -87,60 +83,14 @@ export default {
           const y = this.yScale(medianRank)
           return {
             id, x, y, forceX: x, forceY: y,
-            r: type !== 'thing' ? this.radiusScale(count) : 2,
-            path: type === 'tech' ? this.starPath() :
-              (type === 'person' ? this.asteriskPath() : this.circlePath()),
+            r: this.radiusScale(count) / (type === 'thing' ? 3 : 1),
             rotate: _.random(180),
-            fill: type === 'thing',
-            // for hover
-            label: id,
+            type,
           }
         }).value()
 
       this.simulation.nodes(_.union(this.planets, this.stars)).alpha(1)
       _.times(300, i => this.simulation.tick())
-    },
-    starPath() {
-      const outerRadius = 1
-      const innerRadius = 0.5
-      let path = ''
-      _.times(30, i => {
-        const radius = i % 2 ? outerRadius : innerRadius
-        const angle = i * (Math.PI / 5)
-        const command = i === 0 ? 'M' : 'L'
-        const x = p5.prototype.randomGaussian(radius * Math.cos(angle), 0.05)
-        const y = p5.prototype.randomGaussian(radius * Math.sin(angle), 0.05)
-
-        path += `${command} ${x},${y}`
-      })
-      return `${path}Z`
-    },
-    asteriskPath() {
-      let path = ''
-      _.times(12, i => {
-        let angle = p5.prototype.randomGaussian(i * (Math.PI / 4), 0.1)
-        path += `
-          M${_.round(Math.cos(angle), 2)},${_.round(Math.sin(angle), 2)}
-          L${_.round(Math.cos(angle + Math.PI), 2)},${_.round(Math.sin(angle + Math.PI), 2)}`
-      })
-
-      return path
-    },
-    circlePath() {
-      let path = ''
-      _.times(11, i => {
-        const angle = i * (Math.PI / 5)
-        const x = p5.prototype.randomGaussian(Math.cos(angle), 0.03)
-        const y = p5.prototype.randomGaussian(Math.sin(angle), 0.03)
-
-        if (i === 0) {
-          path += `M${x},${y}`
-        } else {
-          path += `A 1,1 0 1 0 ${x},${y}`
-        }
-      })
-
-      return `${path}`
     },
   }
 }
@@ -152,6 +102,7 @@ export default {
   position: relative;
   margin: 10px;
   border-bottom: 1px solid;
+  cursor: pointer;
 }
 
 svg {
