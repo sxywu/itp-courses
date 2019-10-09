@@ -15,6 +15,11 @@
       <!-- axis -->
       <g ref='xAxis' :transform='`translate(0, ${axisY})`' />
       <!-- bottom half: line chart of words -->
+      <g v-for='d in stars'>
+        <path :d='d.path' fill='none' stroke='#333' stroke-dasharray='5 2' />
+        <Star v-for='d in d.stars' v-bind='{d}' />
+        <text :x='d.x2 + 10' :y='d.y2' dy='.35em'>{{ d.word }}</text>
+      </g>
     </svg>
   </div>
 </template>
@@ -34,11 +39,13 @@ export default {
       width: window.innerWidth,
       height: window.innerHeight,
       planets: [],
+      stars: [],
       axisY: 0,
     }
   },
   mounted() {
     this.xScale = d3.scaleLinear().range([margin.left, this.width - margin.right])
+    this.yScale = d3.scaleLinear()
     this.xAxis = d3.axisBottom().tickFormat(d => d).tickSizeOuter(0)
 
     this.calculateData()
@@ -50,6 +57,9 @@ export default {
     },
     classes() {
       return this.$store.getters.classesForGalaxy
+    },
+    words() {
+      return this.$store.getters.wordsForGalaxy
     },
     radiusScale() {
       return this.$store.getters.radiusScale
@@ -64,7 +74,8 @@ export default {
   methods: {
     calculateData() {
       // years
-      const xDomain = d3.extent(_.flatten(this.classes), d => d.year)
+      const nodes = _.union(_.flatten(this.words), _.flatten(this.classes))
+      const xDomain = d3.extent(nodes, d => d.year)
       this.xScale.domain(xDomain)
 
       let y = margin.top
@@ -94,7 +105,33 @@ export default {
           planet: Object.assign(d.planet, {ring: i < (this.classes.length / 4)})
         })).value()
 
-        this.axisY = y += margin.bottom
+      this.axisY = y += margin.bottom
+      y += 2 * margin.top
+
+      const yDomain = d3.extent(_.flatten(this.words), d => d.rank)
+      this.yScale.domain(yDomain).range([y, this.height - 2 * margin.bottom])
+      this.stars = _.map(this.words, words => {
+        let path = ''
+        const stars = _.chain(words)
+          .sortBy(d => d.year)
+          .map((d, i) => {
+            const x = this.xScale(d.year)
+            const y = this.yScale(d.rank)
+            // line to connect
+            const command = i === 0 ? 'M' : 'L'
+            path += `${command} ${x},${y}`
+
+            return {
+              x, y, type: d.type,
+              r: this.radiusScale(d.courses.length) / (d.type === 'thing' ? 3 : 1),
+              rotate: _.random(180),
+            }
+          }).value()
+        return {
+          stars, path, x2: _.last(stars).x, y2: _.last(stars).y,
+          word: words[0].word,
+        }
+      })
     },
     renderAxis() {
       this.xAxis.scale(this.xScale)

@@ -118,6 +118,10 @@ export default new Vuex.Store({
       const classesByCourse = _.groupBy(classes, 'course')
       return _.map(galaxy.classes, ({id}) => classesByCourse[id])
     },
+    wordsForGalaxy({galaxy, words}) {
+      const wordsByKey = _.groupBy(words, 'word')
+      return _.map(galaxy.words, ({id}) => wordsByKey[id])
+    }
   },
   mutations: {
     setClasses(state, classes) {
