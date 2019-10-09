@@ -102,7 +102,16 @@ export default new Vuex.Store({
         .filter(d => d.classes.length > 1)
         .sortBy(d => -d.links.length)
         .value()
-    }
+    },
+    nodes(state, {galaxies}) {
+      return _.chain(galaxies)
+        .map(({classes, words}) => _.union(classes, words))
+        .flatten().value()
+    },
+    radiusScale(state, {nodes}) {
+      const domain = d3.extent(nodes, d => d.count)
+      return d3.scaleSqrt().domain(domain).range([5, 15])
+    },
   },
   mutations: {
     setClasses(state, classes) {

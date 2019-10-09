@@ -31,14 +31,6 @@ export default {
     galaxies() {
       return this.$store.getters.galaxies
     },
-    nodes() {
-      return _.chain(this.galaxies)
-        .map(({classes, words}) => _.union(classes, words))
-        .flatten().value()
-    },
-    radiusScale() {
-      const domain = d3.extent(this.nodes, d => d.count)
-      return d3.scaleSqrt().domain(domain).range([5, 15])
     },
   },
 }
