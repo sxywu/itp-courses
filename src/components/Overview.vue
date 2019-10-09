@@ -2,10 +2,14 @@
   <div id="overview">
     <div class='galaxy' v-for='{planets, stars, lines, title} in groups'>
       <svg :width='width' :height='height'>
-        <!-- <line v-for='d in lines' :x1='d.source.x' :y1='d.source.y'
-          :x2='d.target.x' :y2='d.target.y' stroke='#999' /> -->
-        <circle v-for='d in planets' :cx='d.x' :cy='d.y' :r='d.r'
-          fill='#fff' stroke='#333' stroke-width='2' />
+        <g v-for='d in planets' :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'>
+          <path :d='d.path' fill='#fff' stroke='#333' :stroke-width='2 / d.r' />
+          <!-- planet's ring -->
+          <path v-if='d.ring' d='M1,0 A1.25,0.25 0 1 1 -1,0'
+            fill='none' stroke='#333' :stroke-width='2 / d.r' />
+          <!-- <path v-if='d.numRings > 1' d='M1,0 A1.25,0.25 0 1 1 -1,0'
+            transform='scale(1.25,1.5)' fill='none' stroke='#333' :stroke-width='1.5 / d.r' /> -->
+        </g>
         <path v-for='d in stars' :d='d.path'
           :fill='d.fill ? `#333` : `#fff`' stroke='#333' :stroke-width='2 / d.r'
           :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
@@ -34,7 +38,7 @@ export default {
     this.simulation = d3.forceSimulation()
       .force('x', d3.forceX(d => d.forceX))
       .force('y', d3.forceY(d => d.forceY))
-      .force('collide', d3.forceCollide(d => d.r + 5))
+      .force('collide', d3.forceCollide(d => d.r + 10))
       .stop()
     this.xScale = d3.scaleLinear().range([margin.left, width - margin.right])
     this.yScale = d3.scaleLinear().range([margin.top, height - margin.bottom])
@@ -75,12 +79,15 @@ export default {
 
         const planets = _.chain(classes)
           .sortBy(d => -d.count)
-          .map(({medianYear, count, id}) => {
+          .map(({medianYear, count, id}, i) => {
             const x = this.xScale(medianYear)
             const y = medianY
             return {
               id, x, y, forceX: x, forceY: y,
               r: this.radiusScale(5 * count),
+              path: this.circlePath(),
+              rotate: _.random(-30, 30),
+              ring: i < (classes.length / 4),
             }
           }).value()
 
@@ -133,7 +140,7 @@ export default {
     },
     circlePath() {
       let path = ''
-      _.times(10, i => {
+      _.times(11, i => {
         const angle = i * (Math.PI / 5)
         const x = _.round(Math.cos(angle), 2)
         const y = _.round(Math.sin(angle), 2)
@@ -145,7 +152,7 @@ export default {
         }
       })
 
-      return `${path}Z`
+      return `${path}`
     },
   }
 }
