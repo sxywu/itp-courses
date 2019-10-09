@@ -7,9 +7,10 @@
         <circle v-for='d in planets' :cx='d.x' :cy='d.y' :r='d.r'
           fill='#fff' stroke='#333' stroke-width='2' />
         <path v-for='d in stars' :d='d.path'
-          :fill='d.fill ? `$333` : `none`' stroke='#333' :stroke-width='2 / d.r'
+          :fill='d.fill ? `#333` : `#fff`' stroke='#333' :stroke-width='2 / d.r'
           :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
       </svg>
+      <div class='title'>{{ title }}</div>
     </div>
   </div>
 </template>
@@ -61,7 +62,7 @@ export default {
   },
   methods: {
     calculateData() {
-      this.groups = _.map(this.galaxies, ({words, classes, links}) => {
+      this.groups = _.map(this.galaxies, ({words, classes, links, title}) => {
         // scales
         const xDomain = d3.extent(_.union(words, classes), d => d.medianYear)
         const yDomain = d3.extent(words, d => d.medianRank)
@@ -101,7 +102,7 @@ export default {
         this.simulation.nodes(_.union(planets, stars)).alpha(1)
         _.times(300, i => this.simulation.tick())
 
-        return {planets, stars}
+        return {planets, stars, title: _.maxBy(classes, d => -d.count).title}
       })
     },
     starPath() {
@@ -153,11 +154,19 @@ export default {
 <style>
 .galaxy {
   display: inline-block;
+  position: relative;
+  margin: 10px;
+  border-bottom: 1px solid;
 }
 
 svg {
   overflow: visible;
-  margin: 10px;
-  border: 1px solid;
+}
+
+.title {
+  width: 400px;
+  padding-bottom: 10px;
+  text-align: right;
+  font-weight: bold;
 }
 </style>
