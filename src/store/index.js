@@ -15,6 +15,7 @@ export default new Vuex.Store({
     galaxies({words}) {
       if (!words.length) return
 
+      const galaxies = {}
       const classes = {}
       const links = {}
       words = _.chain(words)
@@ -32,7 +33,7 @@ export default new Vuex.Store({
 
           _.chain(words).map('courses').flatten()
             .sortBy(d => -d.year)
-            .each(({course, year, title}) => {
+            .each(({course, year, title, group}) => {
               // for each course, create it if it doesn't yet exist
               if (!classes[course]) {
                 classes[course] = {
@@ -40,6 +41,7 @@ export default new Vuex.Store({
                   count: 0,
                   years: [],
                   medianYear: year,
+                  group,
                 }
               }
 
@@ -48,61 +50,24 @@ export default new Vuex.Store({
               target.years.push(year)
               target.medianYear = d3.median(_.sortBy(target.years))
 
-              // and remember the link
-              const key = `${source.id},${target.id}`
-              if (!links[key]) {
-                links[key] = {
-                  key,
-                  source, target,
-                  count: 0,
+              // take care of galaxies
+              if (!galaxies[group]) {
+                galaxies[group] = {
+                  id: group,
+                  words: [],
+                  classes: [],
                 }
               }
-              const link = links[key]
-              link.count += 1
+              galaxies[group].words.push(source)
+              galaxies[group].classes.push(target)
           }).value()
           return source
         }).value()
 
-      // now go through all links and put words, classes, and links in their own galaxies
-      let galaxyId = 1
-      let galaxies = []
-      const galaxiesByNode = {} // key: nodes, value: galaxy
-      _.each(links, (link) => {
-        const {source, target} = link
-        let galaxy = galaxiesByNode[source.id] || galaxiesByNode[target.id]
-
-        if (!galaxy) {
-          // if galaxy doesn't exist, create it
-          galaxy = {
-            id: `galaxy_${galaxyId}`,
-            words: [],
-            classes: [],
-            links: [],
-          }
-          galaxies.push(galaxy)
-          // and then up the galaxy id for next galaxy
-          galaxyId += 1
-        }
-
-        // if word is new for the galaxy
-        if (!galaxiesByNode[source.id]) {
-          // then add it
-          galaxy.words.push(source)
-          galaxiesByNode[source.id] = galaxy
-        }
-        // if class is new for the galaxy
-        if (!galaxiesByNode[target.id]) {
-          // then add it
-          galaxy.classes.push(target)
-          galaxiesByNode[target.id] = galaxy
-        }
-        galaxy.links.push(link)
-      })
-
-      return _.chain(galaxies)
-        .filter(d => d.classes.length > 1)
-        .sortBy(d => -d.links.length)
-        .value()
+      return _.map(galaxies, d => Object.assign(d, {
+        words: _.uniqBy(d.words, 'id'),
+        classes: _.uniqBy(d.classes, 'id'),
+      }))
     },
     nodes(state, {galaxies}) {
       return _.chain(galaxies)
