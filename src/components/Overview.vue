@@ -6,7 +6,8 @@
           :x2='d.target.x' :y2='d.target.y' stroke='#999' /> -->
         <circle v-for='d in planets' :cx='d.x' :cy='d.y' :r='d.r'
           fill='#fff' stroke='#333' stroke-width='2' />
-        <path v-for='d in stars' :d='d.path' fill='none' stroke='#333' :stroke-width='2 / d.r'
+        <path v-for='d in stars' :d='d.path'
+          :fill='d.fill ? `$333` : `none`' stroke='#333' :stroke-width='2 / d.r'
           :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
       </svg>
     </div>
@@ -89,9 +90,11 @@ export default {
             const y = this.yScale(medianRank)
             return {
               id, x, y, forceX: x, forceY: y,
-              r: this.radiusScale(count),
-              path: type === 'tech' ? this.starPath() : '',
+              r: type !== 'thing' ? this.radiusScale(count) : 1.5,
+              path: type === 'tech' ? this.starPath() :
+                (type === 'person' ? this.asteriskPath() : this.circlePath()),
               rotate: _.random(180),
+              fill: type === 'thing',
             }
           }).value()
 
@@ -117,7 +120,31 @@ export default {
       return `${path}Z`
     },
     asteriskPath() {
+      let path = ''
+      _.times(3, i => {
+        let angle = i * (Math.PI / 1.5)
+        path += `
+          M${_.round(Math.cos(angle), 2)},${_.round(Math.sin(angle), 2)}
+          L${_.round(Math.cos(angle + Math.PI), 2)},${_.round(Math.sin(angle + Math.PI), 2)}`
+      })
 
+      return path
+    },
+    circlePath() {
+      let path = ''
+      _.times(10, i => {
+        const angle = i * (Math.PI / 5)
+        const x = _.round(Math.cos(angle), 2)
+        const y = _.round(Math.sin(angle), 2)
+
+        if (i === 0) {
+          path += `M${x},${y}`
+        } else {
+          path += `A 1,1 0 1 0 ${x},${y}`
+        }
+      })
+
+      return `${path}Z`
     },
   }
 }
