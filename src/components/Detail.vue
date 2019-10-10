@@ -2,14 +2,14 @@
   <div class='detail'>
     <svg :width='width' :height='height'>
       <!-- selected year -->
-      <rect :x='rect.x - rect.width / 2' :width='rect.width' :height='rect.height'
-        fill='#f0f0f0' />
+      <rect v-for='d in rects' :x='d.x' :width='d.width' :height='d.height'
+        fill='#f0f0f0' :opacity='d.opacity' @click='$store.commit(`setYear`, d.year)' />
       <!-- top half: timeline of classes -->
       <g v-for='d in planets' :transform='`translate(0, ${d.y})`'>
-        <circle :cx='d.x2' r='2' fill='#333' />
+        <line :x1='d.x2' :x2='d.x2' y1='-3.5' y2='3.5' stroke='#333' />
         <line :x1='d.x1' :x2='d.x2' stroke='#333' stroke-width='2' />
         <Planet v-bind='{d: d.planet}' />
-        <g :transform='`translate(${d.x2 + 10}, 0)`'>
+        <g :transform='`translate(${d.x2 + 6}, 0)`'>
           <text>{{ d.title }}</text>
           <text class='years' dy='1em'>{{ d.year1 }}
             <tspan v-if='d.year1 !== d.year2'> - {{ d.year2 }}</tspan></text>
@@ -43,7 +43,7 @@ export default {
       height: 1466, // 1920 - 334
       planets: [],
       stars: [],
-      rect: {}, // for drawing year
+      rects: {}, // for drawing each year
       axisY: 0,
     }
   },
@@ -53,6 +53,7 @@ export default {
     this.xAxis = d3.axisBottom().tickFormat(d => d).tickSizeOuter(0)
 
     this.calculateData()
+    this.calculateRects()
     this.renderAxis()
   },
   computed: {
@@ -78,21 +79,27 @@ export default {
   watch: {
     classes() {
       this.calculateData()
+      this.calculateRects()
       this.renderAxis()
+    },
+    year() {
+      this.calculateRects()
     },
   },
   methods: {
     calculateData() {
+      if (!this.galaxy) return
+
       // years
-      const nodes = _.union(_.flatten(this.words), _.flatten(this.classes))
-      const xDomain = d3.extent(nodes, d => d.year)
+      const xDomain = d3.extent(this.galaxy.years, d => d)
       this.xScale.domain(xDomain).nice()
 
-      let y = margin.top
+      let y = this.y = margin.top
       this.planets = _.chain(this.classes)
         .sortBy(classes => d3.min(classes, d => d.year))
         .map((classes, i) => {
-          const [min, max] = d3.extent(classes, d => d.year)
+          const min = d3.min(classes, d => d.year)
+          const max = d3.max(classes, d => this.galaxy.years[_.indexOf(this.galaxy.years, d.year) + 1])
           const x = this.xScale(min)
           const r = this.radiusScale(classes.length)
           const height = Math.max(2 * r + 10, 32)
@@ -146,12 +153,23 @@ export default {
             word: word[0].word,
           }
         }).value()
+    },
+    calculateRects() {
+      if (!this.galaxy) return
 
-      this.rect = {
-        x: this.xScale(this.year),
-        width: this.xScale(this.year) - this.xScale(this.year - 1),
-        height: y + this.stars.length * wordHeight,
-      }
+      this.rects = _.chain(this.galaxy.years)
+        .map((year, i) => {
+          const next = this.galaxy.years[i + 1]
+          if (!next) return
+          const x = this.xScale(year)
+
+          return {
+            x, width: this.xScale(next) - x,
+            height: this.y + this.stars.length * wordHeight,
+            opacity: +(this.year === year),
+            year,
+          }
+        }).dropRight().value()
     },
     renderAxis() {
       this.xAxis.scale(this.xScale)

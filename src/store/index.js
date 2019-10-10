@@ -59,6 +59,9 @@ export default new Vuex.Store({
       state.galaxy = galaxy
       state.year = galaxy.years[0]
     },
+    setYear(state, year) {
+      state.year = year
+    },
   },
   actions: {
     getRawData: function({ commit }) {
@@ -114,11 +117,13 @@ export default new Vuex.Store({
                 }
               }).value()
 
+            const years = _.chain(classes).union(words)
+              .map('years').flatten().uniq().sortBy().value()
             return {
               classes,
               words,
               id,
-              years: d3.extent(_.union(classes, words), d => d.years[0]),
+              years,
             }
           }).filter(d => d.classes.length && d.words.length)
           .sortBy(d => -d.classes.length - d.words.length)
