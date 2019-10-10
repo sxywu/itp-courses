@@ -1,8 +1,9 @@
 <template>
   <div class='galaxy' :style='{
     opacity: galaxy === selectedGalaxy ? 1 : 0.75,
-    paddingTop: galaxy === selectedGalaxy ? 10 : 0,
-    }' @click='$store.commit(`setGalaxy`, galaxy)'>
+    paddingTop: galaxy === selectedGalaxy ? `5px` : `0px`,
+    backgroundColor: galaxy === selectedGalaxy ? `#fff` : `#f0f0f0`,
+  }' @click='$store.commit(`setGalaxy`, galaxy)'>
     <svg :width='width' :height='height'>
       <Planet v-for='d in planets' v-bind='{d}' />
       <Star v-for='d in stars' v-bind='{d}' />
@@ -58,6 +59,8 @@ export default {
   },
   methods: {
     calculateData() {
+      if (!this.galaxy) return
+
       const {words, classes, title} = this.galaxy
       // scales
       const xDomain = d3.extent(_.union(words, classes), d => d.medianYear)
@@ -108,9 +111,8 @@ export default {
   position: relative;
   padding-left: 20px;
   padding-right: 20px;
+  margin-right: 5px;
   cursor: pointer;
-  border-top: 1px solid;
-  border-right: 1px solid;
 }
 
 svg {
@@ -121,8 +123,10 @@ svg {
   position: absolute;
   bottom: 0px;
   width: 400px;
+  margin-left: -10px;
   padding-bottom: 10px;
-  text-align: center;
+  /* text-align: center; */
   font-weight: bold;
+  z-index: -1;
 }
 </style>

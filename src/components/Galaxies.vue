@@ -1,13 +1,18 @@
 <template>
   <div id="galaxies">
-    <div class='selectedGalaxy'>
-      <Galaxy v-bind='{galaxy}' />
-    </div>
-    <div class='otherGalaxiesContainer'>
-      <div class='otherGalaxies' :style='{
-        width: `${(otherGalaxies.length) * 441}px`,
+    <div class='scrollContainer'>
+      <div ref='scroll' :style='{
+        width: `${(galaxies.length) * 446 - 22}px`,
       }'>
-        <Galaxy v-for='galaxy in otherGalaxies' v-bind='{galaxy}' />
+        <div class='otherGalaxies'>
+          <Galaxy v-for='galaxy in prevGalaxies' v-bind='{galaxy}' />
+        </div>
+        <div class='selectedGalaxy'>
+          <Galaxy v-bind='{galaxy}' />
+        </div>
+        <div class='otherGalaxies'>
+          <Galaxy v-for='galaxy in nextGalaxies' v-bind='{galaxy}' />
+        </div>
       </div>
     </div>
   </div>
@@ -28,10 +33,15 @@ export default {
     galaxy() {
       return this.$store.state.galaxy
     },
-    otherGalaxies() {
-      return _.without(this.galaxies, this.galaxy)
+    prevGalaxies() {
+      const index = _.indexOf(this.galaxies, this.galaxy)
+      return _.slice(this.galaxies, 0, index)
     },
-  }
+    nextGalaxies() {
+      const index = _.indexOf(this.galaxies, this.galaxy)
+      return _.slice(this.galaxies, index + 1, this.galaxies.length)
+    },
+  },
 }
 </script>
 
@@ -39,23 +49,28 @@ export default {
 #galaxies {
   width: 100%;
   overflow: hidden;
-  margin-top: 20px;
+  margin-top: 30px;
+}
+
+.scrollContainer {
+  overflow: scroll;
 }
 
 .selectedGalaxy {
   width: 440px;
   display: inline-block;
   vertical-align: top;
+  border-top: 1px solid;
+  border-right: 1px solid;
+  border-left: 1px solid;
 }
 
-.otherGalaxiesContainer {
+.otherGalaxies {
   display: inline-block;
-  width: calc(100% - 440px);
+  margin-top: 11px;
   height: 200px;
-  margin-top: 6px;
-  overflow-x: scroll;
-  background-color: #f6f6f6;
   border-bottom: 1px solid;
+  overflow: hidden;
 }
 
 </style>
