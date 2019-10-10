@@ -40,12 +40,20 @@ _.each(coursesByID, (classes, id) => {
     const group = _.chain(coursesByTitle[d.title]).countBy('kmeans_20_groups').toPairs().maxBy(1).value()[0]
     // go through each class with a different id and remap that id to this one
     _.each(ids, otherId => {
-      _.each(coursesByID[otherId], d => Object.assign(d, {id, group}))
+      _.each(coursesByID[otherId], d => d.id = id)
       // then delete the other id
       delete coursesByID[otherId]
     })
   })
 })
+
+// also make sure that the groups are uniform throughout for a class
+_.chain(classes)
+  .groupBy('id')
+  .each(classes => {
+    const group = _.chain(classes).countBy('kmeans_20_groups').toPairs().maxBy(1).value()[0]
+    _.each(classes, d => d.group = +group)
+  }).value()
 
 classes = _.map(classes, ({
   title, year, id, instructor, catalog_number,
@@ -57,7 +65,7 @@ classes = _.map(classes, ({
     credits: +(credits.replace(/ points?/, '')),
     year: +year,
     words: [],
-    group: group || kmeans_20_groups,
+    group: group,
   }))
 
 words = _.chain(words)
