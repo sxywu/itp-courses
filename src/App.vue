@@ -6,6 +6,7 @@
     </div>
 
     <Galaxies />
+    <h2>GALAXY NAME</h2>
     <Detail />
 
     <!-- HOVER -->
@@ -55,6 +56,11 @@ export default {
 
 #byline {
   text-align: center;
+}
+
+h2 {
+  padding-left: 20px;
+  padding-top: 20px;
 }
 
 .hovered {

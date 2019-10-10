@@ -37,7 +37,7 @@ export default {
   components: {Planet, Star},
   data() {
     return {
-      height: 3 * window.innerHeight,
+      height: 1466, // 1920 - 334
       planets: [],
       stars: [],
       axisY: 0,
