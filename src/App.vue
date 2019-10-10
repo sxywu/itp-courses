@@ -30,11 +30,25 @@ export default {
   created() {
     this.$store.dispatch('getRawData')
   },
+  mounted() {
+    this.twinkleStars()
+  },
   computed: {
     selectedGalaxy() {
-      return this.$store.state.galaxy
+      return this.$store.state.galaxy || {}
     },
   },
+  methods: {
+    twinkleStars() {
+      let prev = 0
+      d3.timer(elapsed => {
+        if (elapsed - prev > 400) {
+          this.$store.commit('toggleTwinkle')
+          prev = elapsed
+        }
+      })
+    },
+  }
 }
 </script>
 

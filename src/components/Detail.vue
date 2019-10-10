@@ -105,7 +105,6 @@ export default {
           return {
             planet: {
               x, y: 0, r,
-              rotate: _.random(-30, 30),
             },
             x1: x, x2: this.xScale(max),
             y: y - height / 2,
@@ -115,7 +114,10 @@ export default {
           }
         }).sortBy(({count}) => -count)
         .map((d, i) => Object.assign(d, {
-          planet: Object.assign(d.planet, {ring: i < (this.classes.length / 4)})
+          planet: Object.assign(d.planet, {
+            ring: i < (this.classes.length / 4),
+            rotate: (i % 2 ? -1 : 1) * _.random(30),
+          })
         })).value()
 
       this.axisY = y += margin.bottom

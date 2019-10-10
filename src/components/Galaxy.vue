@@ -79,7 +79,7 @@ export default {
           return {
             id, x, y, forceX: x, forceY: y,
             r: this.radiusScale(count),
-            rotate: _.random(-30, 30),
+            rotate: (i % 2 ? -1 : 1) * _.random(30),
             ring: i < (classes.length / 4),
           }
         }).value()
@@ -91,7 +91,7 @@ export default {
           const y = this.yScale(medianRank)
           return {
             id, x, y, forceX: x, forceY: y,
-            r: this.radiusScale(count) / (type === 'thing' ? 5 : 2),
+            r: this.radiusScale(count) / (type === 'thing' ? 6 : 2),
             rotate: _.random(180),
             type,
           }

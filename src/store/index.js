@@ -14,6 +14,7 @@ export default new Vuex.Store({
     galaxies: [],
     galaxy: null, // selected galaxy
     year: 1980,
+    twinkle: false, // for ANIMATION
   },
   getters: {
     nodes({galaxies}) {
@@ -62,6 +63,9 @@ export default new Vuex.Store({
     setYear(state, year) {
       state.year = year
     },
+    toggleTwinkle(state) {
+      state.twinkle = !state.twinkle
+    }
   },
   actions: {
     getRawData: function({ commit }) {
@@ -83,7 +87,6 @@ export default new Vuex.Store({
         // calculate galaxies from the two datasets
         // NOTE: had to filter out classes that only happened once, and those with no keywords
         const groupsById = _.keyBy(groups, 'id')
-        console.log(groups)
         const galaxies = _.chain(classes)
           .filter(d => d.words.length)
           .groupBy('group')
@@ -122,7 +125,6 @@ export default new Vuex.Store({
 
             const years = _.chain(classes).union(words)
               .map('years').flatten().uniq().sortBy().value()
-              console.log(groupsById[id].title)
             return {
               id,
               title: groupsById[id].title,

@@ -3,7 +3,8 @@
   <path class='star' :d='d.type === `tech` ? starPath() :
       (d.type === `person` ? asteriskPath() : circlePath())'
     :fill='d.type === `thing` ? `#333` : `#fff`'stroke='#333' :stroke-width='1.5 / d.r'
-    :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
+    :transform='`translate(${d.x}, ${d.y})scale(${d.r})
+      rotate(${d.rotate + (twinkle ? twinkleRotation : 0)})`' />
 </template>
 
 <script>
@@ -14,6 +15,18 @@ import p5 from 'p5'
 export default {
   name: 'star',
   props: ['d'],
+  data() {
+    return {
+      // if rotation is negative, twinkle in positive direction
+      // if positive, twinkle negative
+      twinkleRotation: _.random(30, 45),
+    }
+  },
+  computed: {
+    twinkle() {
+      return this.d.type !== 'thing' ? this.$store.state.twinkle : false
+    },
+  },
   methods: {
     starPath() {
       const outerRadius = 1

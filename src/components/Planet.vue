@@ -1,6 +1,7 @@
 <template>
   <!-- PLANETS -->
-  <g class='planet' :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'>
+  <g class='planet' :transform='`translate(${d.x}, ${d.y})scale(${d.r})
+    rotate(${d.rotate + (twinkle ? twinkleRotation : 0)})`'>
     <path :d='circlePath()' fill='#fff' stroke='#333' :stroke-width='0.75 / d.r' />
     <!-- planet's ring -->
     <path v-if='d.ring' d='M1,0 A1.25,0.25 0 1 1 -1,0'
@@ -16,6 +17,17 @@ import p5 from 'p5'
 export default {
   name: 'planet',
   props: ['d'],
+  data() {
+    return {
+      twinkleRotation: 2 * (this.d.rotate < 0 ? -1 : 1) * _.random(this.d.rotate),
+    }
+  },
+  computed: {
+    twinkle() {
+      // return this.d.ring ? this.$store.state.twinkle : false
+      return this.$store.state.twinkle
+    },
+  },
   methods: {
     circlePath() {
       let path = ''
