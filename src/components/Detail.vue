@@ -15,8 +15,8 @@
       <!-- axis -->
       <g ref='xAxis' :transform='`translate(0, ${axisY})`' />
       <!-- bottom half: line chart of words -->
-      <g v-for='d in stars'>
-        <path :d='d.path' fill='none' stroke='#333' stroke-dasharray='5 2' />
+      <g v-for='d in stars' :transform='`translate(0, ${d.y})`'>
+        <path :d='d.path' fill='none' stroke='#999' stroke-dasharray='5' />
         <Star v-for='d in d.stars' v-bind='{d}' />
         <text :x='d.x2 + 10' :y='d.y2' dy='.35em'>{{ d.word }}</text>
       </g>
@@ -31,13 +31,13 @@ import Planet from './Planet.vue'
 import Star from './Star.vue'
 
 const margin = {top: 20, right: 160, bottom: 20, left: 40}
+const wordHeight = 48
 export default {
   name: 'detail',
   components: {Planet, Star},
   data() {
     return {
-      width: window.innerWidth,
-      height: window.innerHeight,
+      height: 3 * window.innerHeight,
       planets: [],
       stars: [],
       axisY: 0,
@@ -45,7 +45,7 @@ export default {
   },
   mounted() {
     this.xScale = d3.scaleLinear().range([margin.left, this.width - margin.right])
-    this.yScale = d3.scaleLinear()
+    this.yScale = d3.scaleLinear().range([wordHeight * 0.2, wordHeight * 0.8])
     this.xAxis = d3.axisBottom().tickFormat(d => d).tickSizeOuter(0)
 
     this.calculateData()
@@ -63,6 +63,9 @@ export default {
     },
     radiusScale() {
       return this.$store.getters.radiusScale
+    },
+    width() {
+      return this.$store.state.width
     },
   },
   watch: {
@@ -84,8 +87,7 @@ export default {
         .map((classes, i) => {
           const [min, max] = d3.extent(classes, d => d.year)
           const x = this.xScale(min)
-          const count = _.sumBy(classes, d => d.words.length)
-          const r = this.radiusScale(count)
+          const r = this.radiusScale(classes.length)
           const height = Math.max(2 * r + 10, 32)
           y += height
 
@@ -98,7 +100,7 @@ export default {
             y: y - height / 2,
             year1: min, year2: max,
             title: _.maxBy(classes, 'year').title,
-            count,
+            count: classes.length,
           }
         }).sortBy(({count}) => -count)
         .map((d, i) => Object.assign(d, {
@@ -108,30 +110,35 @@ export default {
       this.axisY = y += margin.bottom
       y += 2 * margin.top
 
-      const yDomain = d3.extent(_.flatten(this.words), d => d.rank)
-      this.yScale.domain(yDomain).range([y, this.height - 2 * margin.bottom])
-      this.stars = _.map(this.words, words => {
-        let path = ''
-        const stars = _.chain(words)
-          .sortBy(d => d.year)
-          .map((d, i) => {
-            const x = this.xScale(d.year)
-            const y = this.yScale(d.rank)
-            // line to connect
-            const command = i === 0 ? 'M' : 'L'
-            path += `${command} ${x},${y}`
+      this.stars = _.chain(this.words)
+        .sortBy(word => word[0].year)
+        .map((word, i) => {
+          const yDomain = d3.extent(word, d => d.rank)
+          this.yScale.domain(yDomain)
 
-            return {
-              x, y, type: d.type,
-              r: this.radiusScale(d.courses.length) / (d.type === 'thing' ? 3 : 1),
-              rotate: _.random(180),
-            }
-          }).value()
-        return {
-          stars, path, x2: _.last(stars).x, y2: _.last(stars).y,
-          word: words[0].word,
-        }
-      })
+          let path = ''
+          const stars = _.chain(word)
+            .sortBy(d => d.year)
+            .map((d, i) => {
+              const x = this.xScale(d.year)
+              const y = this.yScale(d.rank)
+              // line to connect
+              const command = i === 0 ? 'M' : 'L'
+              path += `${command} ${x},${y}`
+
+              return {
+                x, y, type: d.type,
+                r: this.radiusScale(word.length) / (d.type === 'thing' ? 4 : 2),
+                rotate: _.random(180),
+              }
+            }).value()
+          return {
+            stars, path,
+            y: y + i * wordHeight,
+            x2: _.last(stars).x, y2: _.last(stars).y, // for text
+            word: word[0].word,
+          }
+        }).value()
     },
     renderAxis() {
       this.xAxis.scale(this.xScale)
