@@ -5,13 +5,13 @@
         width: `${(galaxies.length) * 446 - 22}px`,
       }'>
         <div class='otherGalaxies'>
-          <Galaxy v-for='galaxy in prevGalaxies' v-bind='{galaxy}' />
+          <Galaxy v-for='galaxy in prevGalaxies' :key='galaxy.id' v-bind='{galaxy}' />
         </div>
         <div class='selectedGalaxy'>
           <Galaxy v-bind='{galaxy}' />
         </div>
         <div class='otherGalaxies'>
-          <Galaxy v-for='galaxy in nextGalaxies' v-bind='{galaxy}' />
+          <Galaxy v-for='galaxy in nextGalaxies' :key='galaxy.id' v-bind='{galaxy}' />
         </div>
       </div>
     </div>
