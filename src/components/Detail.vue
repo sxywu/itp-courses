@@ -33,7 +33,7 @@ import _ from 'lodash'
 import Planet from './Planet.vue'
 import Star from './Star.vue'
 
-const margin = {top: 20, right: 160, bottom: 20, left: 40}
+const margin = {top: 20, right: 200, bottom: 20, left: 20}
 const wordHeight = 48
 export default {
   name: 'detail',
@@ -48,7 +48,8 @@ export default {
     }
   },
   mounted() {
-    this.xScale = d3.scaleLinear().range([margin.left, this.width - margin.right])
+    this.xScale = d3.scaleLinear().domain([1980, 2020])
+      .range([margin.left, this.width - margin.right])
     this.yScale = d3.scaleLinear().range([wordHeight * 0.2, wordHeight * 0.8])
     this.xAxis = d3.axisBottom().tickFormat(d => d).tickSizeOuter(0)
 
@@ -89,10 +90,6 @@ export default {
   methods: {
     calculateData() {
       if (!this.galaxy) return
-
-      // years
-      const xDomain = d3.extent(this.galaxy.years, d => d)
-      this.xScale.domain(xDomain).nice()
 
       let y = this.y = margin.top
       this.planets = _.chain(this.classes)
