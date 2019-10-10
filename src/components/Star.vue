@@ -1,6 +1,6 @@
 <template>
   <!-- PLANETS -->
-  <path :d='d.type === `tech` ? starPath() :
+  <path class='star' :d='d.type === `tech` ? starPath() :
       (d.type === `person` ? asteriskPath() : circlePath())'
     :fill='d.type === `thing` ? `#333` : `#fff`'stroke='#333' :stroke-width='1.5 / d.r'
     :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`' />
@@ -62,4 +62,7 @@ export default {
 </script>
 
 <style scoped>
+.star {
+  pointer-events: none;
+}
 </style>

@@ -127,5 +127,6 @@ svg {
   /* text-align: center; */
   font-weight: bold;
   z-index: -1;
+  user-select: none;
 }
 </style>

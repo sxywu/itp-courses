@@ -1,6 +1,6 @@
 <template>
   <!-- PLANETS -->
-  <g :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'>
+  <g class='planet' :transform='`translate(${d.x}, ${d.y})scale(${d.r})rotate(${d.rotate})`'>
     <path :d='circlePath()' fill='#fff' stroke='#333' :stroke-width='0.75 / d.r' />
     <!-- planet's ring -->
     <path v-if='d.ring' d='M1,0 A1.25,0.25 0 1 1 -1,0'
@@ -38,4 +38,7 @@ export default {
 </script>
 
 <style scoped>
+.planet {
+  pointer-events: none;
+}
 </style>

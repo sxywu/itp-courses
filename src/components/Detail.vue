@@ -171,6 +171,7 @@ export default {
     renderAxis() {
       this.xAxis.scale(this.xScale)
       d3.select(this.$refs.xAxis).call(this.xAxis)
+        .selectAll('text').style('user-select', 'none')
     },
   }
 }
@@ -186,6 +187,15 @@ export default {
 text {
   font-size: 12px;
 }
+
+circle, path, line, text {
+  pointer-events: none;
+}
+
+text {
+  user-select: none;
+}
+
 .years {
   font-style: italic;
 }

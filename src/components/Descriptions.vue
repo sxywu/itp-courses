@@ -76,6 +76,7 @@ export default {
   margin-right: 10px;
   background: #fff;
   border: 1px solid;
+  user-select: none;
 }
 
 .byline {
@@ -87,5 +88,6 @@ export default {
   background: #333;
   color: #fff;
   padding: 0 3px;
+  margin: 1px 0;
 }
 </style>

@@ -9,14 +9,6 @@
     <h2>{{ selectedGalaxy.title }}</h2>
     <Detail />
     <Descriptions />
-
-    <!-- HOVER -->
-    <div v-if='hovered' class='hovered' :style='{
-      top: `${hovered.y}px`,
-      left: `${hovered.x + hovered.r + 20}px`,
-      }'>
-      {{ hovered.label }}
-    </div>
   </div>
 </template>
 
@@ -57,22 +49,13 @@ export default {
   padding-top: 20px;
   font-size: 20px;
   text-align: center;
-}
-
-#byline {
-  text-align: center;
+  pointer-events: none;
+  user-select: none;
 }
 
 h2 {
   padding: 10px 20px;
-}
-
-.hovered {
-  position: absolute;
-  background: #fff;
-  padding: 0px 5px;
-  box-shadow: 0 0 5px #cfcfcf;
-  font-size: 12px;
   pointer-events: none;
+  user-select: none;
 }
 </style>
