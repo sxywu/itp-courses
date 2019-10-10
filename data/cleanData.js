@@ -37,9 +37,10 @@ _.each(coursesByID, (classes, id) => {
   // go through each class, see if the same title has other id's
   _.each(classes, d => {
     const ids = _.chain(coursesByTitle[d.title]).uniqBy('id').map('id').without(id).value()
+    const group = _.chain(coursesByTitle[d.title]).countBy('kmeans_20_groups').toPairs().maxBy(1).value()[0]
     // go through each class with a different id and remap that id to this one
     _.each(ids, otherId => {
-      _.each(coursesByID[otherId], d => d.id = id)
+      _.each(coursesByID[otherId], d => Object.assign(d, {id, group}))
       // then delete the other id
       delete coursesByID[otherId]
     })
@@ -48,8 +49,7 @@ _.each(coursesByID, (classes, id) => {
 
 classes = _.map(classes, ({
   title, year, id, instructor, catalog_number,
-  credits, description, kmeans_20_groups}) =>
-  Object.assign({}, {
+  credits, description, group, kmeans_20_groups}) => Object.assign({}, {
     id: `${id},${year}`,
     course: id,
     title, description,
@@ -57,7 +57,7 @@ classes = _.map(classes, ({
     credits: +(credits.replace(/ points?/, '')),
     year: +year,
     words: [],
-    group: kmeans_20_groups,
+    group: group || kmeans_20_groups,
   }))
 
 words = _.chain(words)
