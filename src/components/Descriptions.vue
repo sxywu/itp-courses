@@ -59,7 +59,7 @@ export default {
 #descriptions {
   position: absolute;
   width: calc(100% - 40px);
-  height: 300px;
+  height: 400px;
   left: 20px;
   bottom: 30px;
 }
@@ -70,7 +70,7 @@ export default {
 
 .description {
   display: inline-block;
-  height: 280px;
+  height: 380px;
   overflow-y: scroll;
   padding: 10px;
   margin-right: 10px;
