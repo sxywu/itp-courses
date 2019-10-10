@@ -7,83 +7,33 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    width: 1080,
+    height: 1920,
     classes: [],
     words: [],
+    galaxies: [],
     galaxy: null, // selected galaxy
   },
   getters: {
-    galaxies({words}) {
-      if (!words.length) return
-
-      const galaxies = {}
-      const classes = {}
-      const links = {}
-      words = _.chain(words)
-        .groupBy(d => d.word)
-        // only want words connected to two or more classes
-        .filter(words => _.chain(words).map('courses').flatten().map('course').uniq().value().length > 1)
-        .map(words => {
-          let ranks = _.chain(words).map('rank').sortBy().value()
-          let years = _.chain(words).map('year').sortBy().value()
-          const source = {
-            id: words[0].word, count: words.length,
-            type: words[0].type, ranks, years,
-            medianRank: d3.median(ranks), medianYear: d3.median(years),
-          }
-
-          _.chain(words).map('courses').flatten()
-            .sortBy(d => -d.year)
-            .each(({course, year, title, group}) => {
-              // for each course, create it if it doesn't yet exist
-              if (!classes[course]) {
-                classes[course] = {
-                  id: course, title,
-                  count: 0,
-                  years: [],
-                  medianYear: year,
-                  group,
-                }
-              }
-
-              const target = classes[course]
-              target.count += 1
-              target.years.push(year)
-              target.medianYear = d3.median(_.sortBy(target.years))
-
-              // take care of galaxies
-              if (!galaxies[group]) {
-                galaxies[group] = {
-                  id: group,
-                  words: [],
-                  classes: [],
-                }
-              }
-              galaxies[group].words.push(source)
-              galaxies[group].classes.push(target)
-          }).value()
-          return source
-        }).value()
-
-      return _.map(galaxies, d => Object.assign(d, {
-        words: _.uniqBy(d.words, 'id'),
-        classes: _.uniqBy(d.classes, 'id'),
-      }))
-    },
-    nodes(state, {galaxies}) {
+    nodes({galaxies}) {
+      if (!galaxies.length) return
       return _.chain(galaxies)
         .map(({classes, words}) => _.union(classes, words))
         .flatten().value()
     },
     radiusScale(state, {nodes}) {
       const domain = d3.extent(nodes, d => d.count)
-      return d3.scaleSqrt().domain(domain).range([5, 15])
+      return d3.scaleSqrt().domain(domain).range([8, 20])
     },
     // for getting the raw data version
     classesForGalaxy({galaxy, classes}) {
+      if (!galaxy) return
       const classesByCourse = _.groupBy(classes, 'course')
+      console.log(galaxy, classesByCourse)
       return _.map(galaxy.classes, ({id}) => classesByCourse[id])
     },
     wordsForGalaxy({galaxy, words}) {
+      if (!galaxy) return
       const wordsByKey = _.groupBy(words, 'word')
       return _.map(galaxy.words, ({id}) => wordsByKey[id])
     }
@@ -95,7 +45,11 @@ export default new Vuex.Store({
     setWords(state, words) {
       state.words = words
     },
+    setGalaxies(state, galaxies) {
+      state.galaxies = galaxies
+    },
     setGalaxy(state, galaxy) {
+      console.log(galaxy)
       state.galaxy = galaxy
     },
   },
@@ -104,7 +58,7 @@ export default new Vuex.Store({
       Promise.all([
         d3.json('./classes.json'),
         d3.json('./words.json'),
-      ]).then(([classes, words]) => {
+      ]).then(([classes, words], id) => {
         // link them to each other
         const classesById = _.keyBy(classes, 'id')
         const wordsById = _.keyBy(words, 'id')
@@ -115,8 +69,52 @@ export default new Vuex.Store({
           courses: _.map(d.courses, id => classesById[id])
         }))
 
+        // calculate galaxies from the two datasets
+        // NOTE: had to filter out classes that only happened once, and those with no keywords
+        const galaxies = _.chain(classes)
+          .filter(d => d.words.length)
+          .groupBy('group')
+          .map((classes, id) => {
+            // get all the words from all the classes and aggregate
+            const words = _.chain(classes)
+              .map('words').flatten().filter()
+              .groupBy('word')
+              .filter(words => words.length > 1)
+              // .filter(words => _.chain(words).map('courses').flatten().map('course').uniq().value().length > 1)
+              .map(words => {
+                const ranks = _.chain(words).map('rank').sortBy().value()
+                const years = _.chain(words).map('year').sortBy().value()
+                return {
+                  id: words[0].word, count: words.length,
+                  type: words[0].type, ranks, years,
+                  medianRank: d3.median(ranks), medianYear: d3.median(years),
+                  group: id,
+                }
+              }).value()
+            // now make nodes for each class (grouped by ID)
+            classes = _.chain(classes)
+              .groupBy('course')
+              .filter(classes => classes.length > 1)
+              .map(classes => {
+                classes = _.sortBy(classes, 'year')
+                return {
+                  id: classes[0].course,
+                  count: classes.length,
+                  medianYear: d3.median(classes, d => d.year),
+                  title: _.last(classes).title,
+                  group: id,
+                }
+              }).value()
+
+            return {classes, words, id}
+          }).filter(d => d.classes.length && d.words.length)
+          .sortBy(d => -d.classes.length - d.words.length)
+          .value()
+
         commit('setClasses', classes)
         commit('setWords', words)
+        commit('setGalaxies', galaxies)
+        commit('setGalaxy', galaxies[0])
       })
     },
   }
