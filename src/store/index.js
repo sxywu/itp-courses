@@ -29,7 +29,6 @@ export default new Vuex.Store({
     classesForGalaxy({galaxy, classes}) {
       if (!galaxy) return
       const classesByCourse = _.groupBy(classes, 'course')
-      console.log(galaxy, classesByCourse)
       return _.map(galaxy.classes, ({id}) => classesByCourse[id])
     },
     wordsForGalaxy({galaxy, words}) {
@@ -49,7 +48,6 @@ export default new Vuex.Store({
       state.galaxies = galaxies
     },
     setGalaxy(state, galaxy) {
-      console.log(galaxy)
       state.galaxy = galaxy
     },
   },
