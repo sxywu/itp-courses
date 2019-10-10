@@ -1,10 +1,13 @@
 <template>
-  <div class='galaxy' @click='$store.commit(`setGalaxy`, galaxy)'>
+  <div class='galaxy' :style='{
+    opacity: galaxy === selectedGalaxy ? 1 : 0.75,
+    paddingTop: galaxy === selectedGalaxy ? 10 : 0,
+    }' @click='$store.commit(`setGalaxy`, galaxy)'>
     <svg :width='width' :height='height'>
       <Planet v-for='d in planets' v-bind='{d}' />
       <Star v-for='d in stars' v-bind='{d}' />
     </svg>
-    <div class='title'>{{ title }}</div>
+    <div v-if='galaxy !== selectedGalaxy' class='title'>SOME TITLE</div>
   </div>
 </template>
 
@@ -17,7 +20,7 @@ import Star from './Star.vue'
 
 const width = 400 // 40 years
 const height = 200 // 50 ranks
-const margin = {top: 40, right: 40, bottom: 40, left: 40}
+const margin = {top: 20, right: 40, bottom: 20, left: 40}
 export default {
   name: 'overview',
   props: ['galaxy'],
@@ -43,6 +46,9 @@ export default {
   computed: {
     radiusScale() {
       return this.$store.getters.radiusScale
+    },
+    selectedGalaxy() {
+      return this.$store.state.galaxy
     },
   },
   watch: {
@@ -100,8 +106,11 @@ export default {
 .galaxy {
   display: inline-block;
   position: relative;
-  margin: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   cursor: pointer;
+  border-top: 1px solid;
+  border-right: 1px solid;
 }
 
 svg {
@@ -109,9 +118,11 @@ svg {
 }
 
 .title {
+  position: absolute;
+  bottom: 0px;
   width: 400px;
   padding-bottom: 10px;
-  text-align: right;
+  text-align: center;
   font-weight: bold;
 }
 </style>
