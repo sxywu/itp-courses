@@ -6,7 +6,7 @@
     </div>
 
     <Galaxies />
-    <h2>GALAXY NAME</h2>
+    <h2>{{ selectedGalaxy.title }}</h2>
     <Detail />
     <Descriptions />
 
@@ -64,8 +64,7 @@ export default {
 }
 
 h2 {
-  padding-left: 20px;
-  padding-top: 20px;
+  padding: 10px 20px;
 }
 
 .hovered {

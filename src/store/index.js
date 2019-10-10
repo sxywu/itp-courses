@@ -68,7 +68,8 @@ export default new Vuex.Store({
       Promise.all([
         d3.json('./classes.json'),
         d3.json('./words.json'),
-      ]).then(([classes, words], id) => {
+        d3.csv('./groups.csv'),
+      ]).then(([classes, words, groups], id) => {
         // link them to each other
         const classesById = _.keyBy(classes, 'id')
         const wordsById = _.keyBy(words, 'id')
@@ -81,6 +82,8 @@ export default new Vuex.Store({
 
         // calculate galaxies from the two datasets
         // NOTE: had to filter out classes that only happened once, and those with no keywords
+        const groupsById = _.keyBy(groups, 'id')
+        console.log(groups)
         const galaxies = _.chain(classes)
           .filter(d => d.words.length)
           .groupBy('group')
@@ -119,10 +122,12 @@ export default new Vuex.Store({
 
             const years = _.chain(classes).union(words)
               .map('years').flatten().uniq().sortBy().value()
+              console.log(groupsById[id].title)
             return {
+              id,
+              title: groupsById[id].title,
               classes,
               words,
-              id,
               years,
             }
           }).filter(d => d.classes.length && d.words.length)

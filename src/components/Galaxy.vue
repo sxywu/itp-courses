@@ -8,7 +8,7 @@
       <Planet v-for='d in planets' v-bind='{d}' />
       <Star v-for='d in stars' v-bind='{d}' />
     </svg>
-    <div v-if='galaxy !== selectedGalaxy' class='title'>SOME TITLE</div>
+    <div v-if='galaxy !== selectedGalaxy' class='title'>{{ galaxy.title }}</div>
   </div>
 </template>
 
@@ -21,7 +21,7 @@ import Star from './Star.vue'
 
 const width = 400 // 40 years
 const height = 200 // 50 ranks
-const margin = {top: 20, right: 40, bottom: 20, left: 40}
+const margin = {top: 40, right: 40, bottom: 40, left: 40}
 export default {
   name: 'overview',
   props: ['galaxy'],
@@ -29,7 +29,6 @@ export default {
   data() {
     return {
       planets: [], stars: [],
-      title: '',
       width, height,
     }
   },
@@ -61,7 +60,7 @@ export default {
     calculateData() {
       if (!this.galaxy) return
 
-      const {words, classes, title} = this.galaxy
+      const {words, classes} = this.galaxy
       // scales
       const xDomain = d3.extent(_.union(words, classes), d => d.medianYear)
       const yDomain = d3.extent(words, d => d.medianRank)
@@ -123,7 +122,7 @@ svg {
   position: absolute;
   bottom: 0px;
   width: 400px;
-  margin-left: -10px;
+  margin-left: 0px;
   padding-bottom: 10px;
   /* text-align: center; */
   font-weight: bold;
