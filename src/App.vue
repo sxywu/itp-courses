@@ -8,6 +8,7 @@
     <Galaxies />
     <h2>GALAXY NAME</h2>
     <Detail />
+    <Descriptions />
 
     <!-- HOVER -->
     <div v-if='hovered' class='hovered' :style='{
@@ -24,10 +25,11 @@ import * as d3 from 'd3'
 import _ from 'lodash'
 import Galaxies from './components/Galaxies.vue'
 import Detail from './components/Detail.vue'
+import Descriptions from './components/Descriptions.vue'
 
 export default {
   name: 'app',
-  components: {Galaxies, Detail},
+  components: {Galaxies, Detail, Descriptions},
   data() {
     return {
       hovered: null,
@@ -46,10 +48,13 @@ export default {
 
 <style scoped>
 #app {
-  margin-top: 20px;
+  width: 1080px;
+  height: 1920px;
+  position: relative;
 }
 
 #header {
+  padding-top: 20px;
   font-size: 20px;
   text-align: center;
 }

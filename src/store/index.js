@@ -36,7 +36,14 @@ export default new Vuex.Store({
       if (!galaxy) return
       const wordsByKey = _.groupBy(words, 'word')
       return _.map(galaxy.words, ({id}) => wordsByKey[id])
-    }
+    },
+    descriptions({galaxy, classes, year}) {
+      if (!galaxy) return
+      // get every class in the galaxy that has a description in that year
+      return _.chain(galaxy.classes)
+        .map(({id}) => _.find(classes, d => d.course === id && d.year === year))
+        .filter().value()
+    },
   },
   mutations: {
     setClasses(state, classes) {
