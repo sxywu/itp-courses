@@ -1,6 +1,9 @@
 <template>
   <div class='detail'>
     <svg :width='width' :height='height'>
+      <!-- selected year -->
+      <rect :x='rect.x - rect.width / 2' :width='rect.width' :height='rect.height'
+        fill='#f0f0f0' />
       <!-- top half: timeline of classes -->
       <g v-for='d in planets' :transform='`translate(0, ${d.y})`'>
         <circle :cx='d.x2' r='2' fill='#333' />
@@ -40,6 +43,7 @@ export default {
       height: 1466, // 1920 - 334
       planets: [],
       stars: [],
+      rect: {}, // for drawing year
       axisY: 0,
     }
   },
@@ -67,6 +71,9 @@ export default {
     width() {
       return this.$store.state.width
     },
+    year() {
+      return this.$store.state.year
+    },
   },
   watch: {
     classes() {
@@ -79,7 +86,7 @@ export default {
       // years
       const nodes = _.union(_.flatten(this.words), _.flatten(this.classes))
       const xDomain = d3.extent(nodes, d => d.year)
-      this.xScale.domain(xDomain)
+      this.xScale.domain(xDomain).nice()
 
       let y = margin.top
       this.planets = _.chain(this.classes)
@@ -139,6 +146,12 @@ export default {
             word: word[0].word,
           }
         }).value()
+
+      this.rect = {
+        x: this.xScale(this.year),
+        width: this.xScale(this.year) - this.xScale(this.year - 1),
+        height: y + this.stars.length * wordHeight,
+      }
     },
     renderAxis() {
       this.xAxis.scale(this.xScale)
@@ -149,6 +162,12 @@ export default {
 </script>
 
 <style scoped>
+.detail {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
 text {
   font-size: 12px;
 }

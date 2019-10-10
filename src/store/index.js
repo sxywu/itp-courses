@@ -13,6 +13,7 @@ export default new Vuex.Store({
     words: [],
     galaxies: [],
     galaxy: null, // selected galaxy
+    year: 1980,
   },
   getters: {
     nodes({galaxies}) {
@@ -49,6 +50,7 @@ export default new Vuex.Store({
     },
     setGalaxy(state, galaxy) {
       state.galaxy = galaxy
+      state.year = galaxy.years[0]
     },
   },
   actions: {
@@ -95,16 +97,22 @@ export default new Vuex.Store({
               .filter(classes => classes.length > 1)
               .map(classes => {
                 classes = _.sortBy(classes, 'year')
+                const years = _.chain(classes).map('year').sortBy().value()
                 return {
                   id: classes[0].course,
                   count: classes.length,
-                  medianYear: d3.median(classes, d => d.year),
+                  years, medianYear: d3.median(years),
                   title: _.last(classes).title,
                   group: id,
                 }
               }).value()
 
-            return {classes, words, id}
+            return {
+              classes,
+              words,
+              id,
+              years: d3.extent(_.union(classes, words), d => d.years[0]),
+            }
           }).filter(d => d.classes.length && d.words.length)
           .sortBy(d => -d.classes.length - d.words.length)
           .value()
