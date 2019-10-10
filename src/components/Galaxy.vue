@@ -33,7 +33,7 @@ export default {
     this.simulation = d3.forceSimulation()
       .force('x', d3.forceX(d => d.forceX))
       .force('y', d3.forceY(d => d.forceY))
-      .force('collide', d3.forceCollide(d => d.r + 10))
+      .force('collide', d3.forceCollide(d => d.r * 2))
       .stop()
     this.xScale = d3.scaleLinear().range([margin.left, width - margin.right])
     this.yScale = d3.scaleLinear().range([margin.top, height - margin.bottom])
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     calculateData() {
-      const {words, classes, links, title} = this.galaxy
+      const {words, classes, title} = this.galaxy
       // scales
       const xDomain = d3.extent(_.union(words, classes), d => d.medianYear)
       const yDomain = d3.extent(words, d => d.medianRank)
@@ -70,7 +70,7 @@ export default {
           const y = medianY
           return {
             id, x, y, forceX: x, forceY: y,
-            r: this.radiusScale(5 * count),
+            r: this.radiusScale(count),
             rotate: _.random(-30, 30),
             ring: i < (classes.length / 4),
           }
@@ -83,7 +83,7 @@ export default {
           const y = this.yScale(medianRank)
           return {
             id, x, y, forceX: x, forceY: y,
-            r: this.radiusScale(count) / (type === 'thing' ? 3 : 1),
+            r: this.radiusScale(count) / (type === 'thing' ? 5 : 2),
             rotate: _.random(180),
             type,
           }
@@ -101,7 +101,6 @@ export default {
   display: inline-block;
   position: relative;
   margin: 10px;
-  border-bottom: 1px solid;
   cursor: pointer;
 }
 

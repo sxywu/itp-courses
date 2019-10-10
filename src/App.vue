@@ -2,13 +2,11 @@
   <div id="app">
     <div id='header'>
       <h1>Exploring Forty Years of ITP Classes</h1>
-    </div>
-    <div id='byline'>
       data by Jim Schmitz // visualization by Shirley Wu
     </div>
 
-    <Galaxy v-if='!selectedGalaxy' v-for='galaxy in galaxies' v-bind='{galaxy}' />
-    <Detail v-if='selectedGalaxy' />
+    <Galaxies />
+    <Detail />
 
     <!-- HOVER -->
     <div v-if='hovered' class='hovered' :style='{
@@ -23,12 +21,12 @@
 <script>
 import * as d3 from 'd3'
 import _ from 'lodash'
-import Galaxy from './components/Galaxy.vue'
+import Galaxies from './components/Galaxies.vue'
 import Detail from './components/Detail.vue'
 
 export default {
   name: 'app',
-  components: {Galaxy, Detail},
+  components: {Galaxies, Detail},
   data() {
     return {
       hovered: null,
@@ -38,9 +36,6 @@ export default {
     this.$store.dispatch('getRawData')
   },
   computed: {
-    galaxies() {
-      return this.$store.getters.galaxies
-    },
     selectedGalaxy() {
       return this.$store.state.galaxy
     },
@@ -54,7 +49,7 @@ export default {
 }
 
 #header {
-  font-size: 24px;
+  font-size: 20px;
   text-align: center;
 }
 
