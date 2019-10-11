@@ -1,5 +1,12 @@
 <template>
   <div id='detail'>
+    <svg class='years' :width='width' :height='height'>
+      <!-- selected year -->
+      <g :transform='`translate(0, ${rectsTop})`'>
+        <rect :x='rect.x' :width='rect.width' :height='rect.height'
+          fill='#f0f0f0' @click='$store.commit(`setYear`, d.year)' />
+      </g>
+    </svg>
     <svg class='classes' :width='width' :height='classesHeight'>
       <!-- top half: timeline of classes -->
       <g v-for='d in planets' :transform='`translate(0, ${d.y})`'>
@@ -30,12 +37,10 @@
     <div ref='scrollContainer' class='scrollContainer' :style='{
       height: `${docHeight}px`,
     }'>
-      <svg class='years' :width='width' :height='height'>
+      <svg :width='width' :height='height'>
         <!-- selected year -->
-        <g :transform='`translate(0, ${rectsTop})`'>
-          <rect v-for='d in rects' :x='d.x' :width='d.width' :height='d.height'
-            fill='#f0f0f0' :opacity='d.opacity' @click='$store.commit(`setYear`, d.year)' />
-        </g>
+        <rect v-for='d in rects' :x='d.x' :width='d.width' :height='d.height'
+          fill='#f0f0f0' opacity='0' @click='$store.commit(`setYear`, d.year)' />
       </svg>
     </div>
   </div>
@@ -63,7 +68,8 @@ export default {
       height: docHeight, // 1920 - 334
       planets: [],
       stars: [],
-      rects: {}, // for drawing each year
+      rects: [], // for drawing each year
+      rect: {},
       axisY: 0,
       classesHeight: 0, // for animation
       wordsHeight: 0,
@@ -210,10 +216,10 @@ export default {
           return {
             x, width: this.xScale(next) - x,
             y: 0, height: this.height,
-            opacity: +(this.year === year),
             year,
           }
         }).dropRight().value()
+      this.rect = _.find(this.rects, d => d.year === this.year)
     },
     renderAxis() {
       this.xAxis.scale(this.xScale)
@@ -263,7 +269,7 @@ export default {
 
       // adjust year rect height and word top
       this.tl.to(this.$data, 1, {
-        rectsTop: -descHeight + margin.bottom / 2,
+        rectsTop: -this.height + docHeight - descHeight + margin.bottom / 2,
         wordsTop: -this.wordsHeight + (docHeight - classesHeight),
       }, 0)
     },
@@ -282,6 +288,13 @@ export default {
 .scrollContainer {
   overflow: scroll;
   position: absolute;
+  top: 0;
+  left: 0;
+}
+
+svg.years {
+  position: absolute;
+  z-index: -1;
   top: 0;
   left: 0;
 }
