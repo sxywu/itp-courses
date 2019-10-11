@@ -62,6 +62,7 @@ export default {
   height: 400px;
   left: 20px;
   bottom: 30px;
+  pointer-events: none;
 }
 
 .scrollContainer {
@@ -77,6 +78,7 @@ export default {
   background: #fff;
   border: 1px solid;
   user-select: none;
+  pointer-events: auto;
 }
 
 .byline {
