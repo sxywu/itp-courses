@@ -194,9 +194,9 @@ export default {
     calculateRects() {
       if (!this.galaxy) return
 
-      this.rects = _.chain(this.years)
-        .map((year, i) => {
-          const next = this.years[i + 1]
+      this.rects = _.chain(this.galaxy.years)
+        .map(year => {
+          const next = this.years[_.indexOf(this.years, year) + 1]
           if (!next) return
           const x = this.xScale(year)
 

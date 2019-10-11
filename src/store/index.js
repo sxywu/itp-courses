@@ -124,7 +124,7 @@ export default new Vuex.Store({
                 return {
                   id: classes[0].course,
                   count: classes.length,
-                  medianYear: d3.median(years),
+                  years, medianYear: d3.median(years),
                   title: _.last(classes).title,
                   group: id,
                 }
@@ -135,6 +135,7 @@ export default new Vuex.Store({
               title: groupsById[id].title,
               classes,
               words,
+              years: _.chain(classes).map('years').flatten().uniq().value(),
               year,
             }
           }).filter(d => d.classes.length && d.words.length)
