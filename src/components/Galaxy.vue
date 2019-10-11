@@ -114,11 +114,11 @@ export default {
   cursor: pointer;
 }
 
-svg {
+.galaxy svg {
   overflow: visible;
 }
 
-.title {
+.galaxy .title {
   position: absolute;
   bottom: 0px;
   width: 400px;

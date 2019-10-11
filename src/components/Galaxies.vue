@@ -53,7 +53,7 @@ export default {
 }
 
 .scrollContainer {
-  overflow: scroll;
+  overflow-x: scroll;
 }
 
 .selectedGalaxy {
