@@ -60,7 +60,6 @@ import Planet from './Planet.vue'
 import Star from './Star.vue'
 
 const margin = {top: 20, right: 200, bottom: 20, left: 40}
-const wordHeight = 48
 const docHeight = 1466
 const descHeight = 420
 const collapsedClassesHeight = 14
@@ -86,7 +85,6 @@ export default {
   mounted() {
     this.xScale = d3.scaleLinear().domain([1980, 2020])
       .range([margin.left, this.width - margin.right])
-    this.yScale = d3.scaleLinear().range([wordHeight * 0.2, wordHeight * 0.8])
     this.xAxis = d3.axisBottom().tickFormat(d => d).tickSizeOuter(0)
 
     this.$refs.scrollContainer.addEventListener('scroll', this.handleScroll)
@@ -178,30 +176,29 @@ export default {
       this.stars = _.chain(this.words)
         .sortBy(word => word[0].year)
         .map((word, i) => {
-          const yDomain = d3.extent(word, d => d.rank)
-          this.yScale.domain(yDomain)
+          const [min, max] = d3.extent(word, d => d.rank)
+          const height = Math.max(max - min + 20, 28)
+          y += height
 
           let path = ''
           const stars = _.chain(word)
             .sortBy(d => d.year)
             .map((d, i) => {
               const x = this.xScale(d.year)
-              const y = this.yScale(d.rank)
               // line to connect
               const command = i === 0 ? 'M' : 'L'
-              path += `${command} ${x},${y}`
+              path += `${command} ${x},${d.rank - min}`
 
               return {
-                x, y, type: d.type,
+                x, y: d.rank - min, type: d.type,
                 r: this.radiusScale(word.length) / (d.type === 'thing' ? 4 : 2),
                 rotate: _.random(180),
               }
             }).value()
 
-          y += wordHeight
           return {
             stars, path,
-            y: y - wordHeight,
+            y: y - height - 10,
             x2: _.last(stars).x, y2: _.last(stars).y, // for text
             word: word[0].word,
           }
