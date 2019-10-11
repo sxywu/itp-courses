@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div id='header'>
-      <h1>Exploring Forty Years of ITP Classes</h1>
-      data by Jim Schmitz // visualization by Shirley Wu
+      <h1>Forty Years of ITP Classes</h1>
+      data by <span class='name'>Jim Schmitz</span> // visualizations by <span class='name'>Shirley Wu</span>
     </div>
 
     <Galaxies />
@@ -71,5 +71,9 @@ h2 {
   padding: 10px 20px;
   pointer-events: none;
   user-select: none;
+}
+
+.name {
+  /* border-bottom: 1px solid; */
 }
 </style>
