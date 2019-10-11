@@ -1,9 +1,11 @@
 <template>
   <div id='detail'>
-    <svg class='classes' :width='width' :height='classesHeight'>
+    <svg class='years' :width='width' :height='docHeight'>
       <!-- selected year -->
       <rect v-for='d in rects' :x='d.x' :width='d.width' :height='d.height'
         fill='#f0f0f0' :opacity='d.opacity' @click='$store.commit(`setYear`, d.year)' />
+    </svg>
+    <svg class='classes' :width='width' :height='classesHeight'>
       <!-- top half: timeline of classes -->
       <g v-for='d in planets' :transform='`translate(0, ${d.y})`'>
         <circle :cx='d.x1' r='2' />
@@ -45,12 +47,15 @@ import Star from './Star.vue'
 const margin = {top: 20, right: 200, bottom: 20, left: 40}
 const wordHeight = 48
 const docHeight = 1466
+const descHeight = 420
+const collapsedClassesHeight = 14
 
 export default {
   name: 'detail',
   components: {Planet, Star},
   data() {
     return {
+      docHeight,
       height: docHeight, // 1920 - 334
       planets: [],
       stars: [],
@@ -93,6 +98,9 @@ export default {
     width() {
       return this.$store.state.width
     },
+    years() {
+      return this.$store.state.years
+    },
     year() {
       return this.$store.state.year
     },
@@ -116,7 +124,7 @@ export default {
         .sortBy(classes => d3.min(classes, d => d.year))
         .map((classes, i) => {
           const min = d3.min(classes, d => d.year)
-          const max = d3.max(classes, d => this.galaxy.years[_.indexOf(this.galaxy.years, d.year) + 1])
+          const max = d3.max(classes, d => this.years[_.indexOf(this.years, d.year) + 1])
           const x = this.xScale(min)
           const r = this.radiusScale(classes.length)
           const height = Math.max(2 * r + 10, 28)
@@ -180,21 +188,21 @@ export default {
           }
         }).value()
 
-      this.wordsHeight = y + 420
+      this.wordsHeight = y + descHeight
       this.height = docHeight - this.classesHeight
     },
     calculateRects() {
       if (!this.galaxy) return
 
-      this.rects = _.chain(this.galaxy.years)
+      this.rects = _.chain(this.years)
         .map((year, i) => {
-          const next = this.galaxy.years[i + 1]
+          const next = this.years[i + 1]
           if (!next) return
           const x = this.xScale(year)
 
           return {
             x, width: this.xScale(next) - x,
-            height: this.height,
+            height: docHeight,
             opacity: +(this.year === year),
             year,
           }
@@ -220,11 +228,10 @@ export default {
         r: 0,
       }, 0, 0)
 
-      const perHeight = 14
       this.tl.staggerTo(this.planets, 0.2, {
-        cycle: {y: i => i * perHeight + margin.top},
+        cycle: {y: i => i * collapsedClassesHeight + margin.top},
       }, 0, 0)
-      const classesHeight = this.planets.length * perHeight + margin.top + margin.bottom
+      const classesHeight = this.planets.length * collapsedClassesHeight + margin.top + margin.bottom
       this.tl.to(this.$data, 0.2, {
         height: docHeight - classesHeight,
         classesHeight,
@@ -238,6 +245,11 @@ export default {
       this.tl.staggerTo(_.map(this.planets, 'text'), 0.2, {
         titleY: 0.35,
       }, 0, 0)
+
+      // adjust year rect height
+      this.tl.to(this.rects, 1, {
+        height: docHeight - descHeight,
+      }, 0)
     },
   }
 }
@@ -255,12 +267,11 @@ export default {
   overflow: scroll;
 }
 
-text {
-  font-size: 12px;
-}
-
-circle, path, line, text {
-  pointer-events: none;
+svg.years {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
 text {

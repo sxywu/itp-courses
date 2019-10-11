@@ -13,6 +13,7 @@ export default new Vuex.Store({
     words: [],
     galaxies: [],
     galaxy: null, // selected galaxy
+    years: [],
     year: 1980,
     twinkle: false, // for ANIMATION
   },
@@ -59,6 +60,9 @@ export default new Vuex.Store({
     setGalaxy(state, galaxy) {
       state.galaxy = galaxy
       state.year = galaxy.years[0]
+    },
+    setYears(state, years) {
+      state.years = years
     },
     setYear(state, year) {
       state.year = year
@@ -108,34 +112,38 @@ export default new Vuex.Store({
                 }
               }).value()
             // now make nodes for each class (grouped by ID)
+            let year = 2020
             classes = _.chain(classes)
               .groupBy('course')
               .filter(classes => classes.length > 1)
               .map(classes => {
                 classes = _.sortBy(classes, 'year')
                 const years = _.chain(classes).map('year').sortBy().value()
+                year = Math.min(year, years[0]) // remember earliest year for galaxy
+
                 return {
                   id: classes[0].course,
                   count: classes.length,
-                  years, medianYear: d3.median(years),
+                  medianYear: d3.median(years),
                   title: _.last(classes).title,
                   group: id,
                 }
               }).value()
 
-            const years = _.chain(classes).union(words)
-              .map('years').flatten().uniq().sortBy().value()
             return {
               id,
               title: groupsById[id].title,
               classes,
               words,
-              years,
+              year,
             }
           }).filter(d => d.classes.length && d.words.length)
           .sortBy(d => -d.classes.length - d.words.length)
           .value()
 
+        const years = _.chain(classes).map('year').uniq().value()
+
+        commit('setYears', years)
         commit('setClasses', classes)
         commit('setWords', words)
         commit('setGalaxies', galaxies)
