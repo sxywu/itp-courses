@@ -213,6 +213,8 @@ export default {
       this.tl.progress(progress)
     },
     calculateScroll() {
+      this.tl.clear()
+
       // first, animate the courses radius
       this.tl.staggerTo(_.map(this.planets, 'planet'), 0.1, {
         r: 0,
