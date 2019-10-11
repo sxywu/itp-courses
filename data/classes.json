@@ -1559,7 +1559,7 @@
   {
     "title": "Independent Study",
     "year": 1988,
-    "instructor": "Study",
+    "instructor": "Staff",
     "catalog_number": "H79.2110,2111,2112,2113",
     "credits": "2-6 credits",
     "description": "",
@@ -2423,7 +2423,7 @@
   {
     "title": "Experimental Computational Media Projects",
     "year": 1992,
-    "instructor": "0'Sullivan",
+    "instructor": "O'Sullivan",
     "catalog_number": "H79.2301",
     "credits": "4 credits",
     "description": "The course looks at the computer as a transducer of human communications. The computer can enrich communications with the ability to record, transport, translate, repeat, connect, and represent information. Expression-using sound, light, movement, speech, text, toasters-should easily pass both ways through a computer. Students write programs for communication between computers and computer-ready equipment and build their own hardware devices for acquiring data and controlling appliances outside the computer. Finally, students use multimedia authoring languages and, more importantly, interprocess communication to integrate the disparate information passing through the machine.",
@@ -2639,7 +2639,7 @@
   {
     "title": "Interactive Media for Marketing",
     "year": 1994,
-    "instructor": "Nisenboltz",
+    "instructor": "Nisenholtz",
     "catalog_number": "H79.2252",
     "credits": "4 credits",
     "description": "There was a time when marketers sold their goods and services over three television networks and a handful of major magazines. That time is gone. Increasingly, marketers are turning to media that are finely targeted to the needs of the individual consumer. Included in this new world of marketing are interactive media: systems placed at the point of sale, interactive television, on-line services, personal computing software, and others. This course explores developments in these new media, strategic and creative issues, and current methods of applying interactive communication in the marketing process.",
@@ -2846,7 +2846,7 @@
   {
     "title": "Introduction to Telecommunications Marketing",
     "year": 1994,
-    "instructor": "Yobanan",
+    "instructor": "Yohanan",
     "catalog_number": "H79.2288",
     "credits": "4 credits",
     "description": "The course introduces the subject of marketing and provides an understanding and appreciation of the way vendors of telecommunications equipment and services operate in today's competitive marketplace. The focus of this course evolves around the concepts and considerations involved in the marketing planning process, the strategic considerations, and the implementation of marketing programs domestically and internationally. Students are required to develop and submit a final project. The project includes a business plan and marketing proposal for a specific telecommunication product or service.",
@@ -3314,7 +3314,7 @@
   {
     "title": "Visualizing Environments",
     "year": 1996,
-    "instructor": "Weishan",
+    "instructor": "Weishar",
     "catalog_number": "H79.2302",
     "credits": "4 credits",
     "description": "This course focuses on designing interactive three-dimensional environments. Students examine the creative process of developing believable and immersive 3D environments by utilizing the concepts of proportion, scale, artistic detail, and composition. There is an overview of the basic tenets of stage and set design along with an outline of the creative process of transforming conceptual media into functional and attractive artwork. This course also emphasizes the development of the necessary technical skills to translate effectively creative concepts into artwork. The basic techniques of modeling, rendering, and lighting effects are taught in Strata Studio Pro. Students learn to utilize Adobe Illustrator, Photoshop, and MacroMedia Director in conjunction with Studio Pro to create complex and fully realized environments. Students are required to submit three assignments during the term as well as a final project, which will be a complete virtual environment based upon a literary work.",
@@ -3656,7 +3656,7 @@
   {
     "title": "Video Production",
     "year": 1998,
-    "instructor": "O’Hara",
+    "instructor": "O'Hara",
     "catalog_number": "H79.2281",
     "credits": "4 credits",
     "description": "Video is an essential tool of new media. This production class deals with the fundamental elements of video making: video and audio basics, planning, interviewing, shooting, editing, and special effects. Analog and digital editing using ½” and ¾” analog and Premiere and After Effects. Weekly assignments, discussions, and critiques.",
@@ -3863,7 +3863,7 @@
   {
     "title": "Digital Spaces",
     "year": 1998,
-    "instructor": "O’Sullivan",
+    "instructor": "O'Sullivan",
     "catalog_number": "H79.2316",
     "credits": "4 credits",
     "description": "This class is about creating virtual spaces where people can socialize be expressive, or just be visible. The idea that people are only interested in passive media is challenged. The class looks more to the telephone, the street, or the local hairdresser, where people effortlessly represent and express themselves, rather than to media like television or CD-ROMs, where bigger distinctions are made between producers and consumers. Skills for constructing digital spaces using VRML and QTVR are covered. Director and various Xtras are used as a means of authoring interactive environments. The class then moves into creating conceptual spaces where a person’s expressiveness is not limited to movement in 3D space. At this At this time, the class also looks at creating an ecology in order for this expression to become communication. Shockwave and CGI database scripting using Perl are covered. Finally, students use their skills for creating spaces to create synchronously networked “chat” environments. Some chat server technology and Xtras for Director are also covered. Several weekly assignments, a short paper, and a final project are required. Examples are given using Macromedia Director. Students should be comfortable with Lingo or some authoring language. Some Internet experience, such as creating Web pages, is also suggested.",
@@ -4070,7 +4070,7 @@
   {
     "title": "Media and Society: The Battle for Cyberspace",
     "year": 2000,
-    "instructor": "Rusbkoff",
+    "instructor": "Rushkoff",
     "catalog_number": "H79.2245",
     "credits": "4 credits",
     "description": "This is a no-holds-barred discussion about media, technology, and society and the people and institutions trying to shape their direction. We'll look at the agendas of thinkers, journalists, businesspeople, spiritualists, sci-fi authors, and propagandists with wildly conflicting opinions about and intentions for cyberspace. This course of study is designed to challenge our assumptions about media as well as unveil the hidden agendas beneath the assumptions of others. The goal is to learn how to analyze and evaluate what people say about media and technology, as well as how to develop one's own critical stance and formulate an effective strategy for promoting it. Advancing projects in the real world requires the ability to do \"big think\" justification. Meanwhile, maintaining a sense of direction in that same world requires a clear vision of what one hopes to accomplish in the long run. This is a course in how to think about media and technology for oneself and how to defend that thinking in any context.",
@@ -4313,7 +4313,7 @@
   {
     "title": "Creating World Wide Web Sites",
     "year": 2000,
-    "instructor": "Brossier, Cosaboom, Kabl, Kilroy, Petit",
+    "instructor": "Brossier, Cosaboom, Kahl, Kilroy, Petit",
     "catalog_number": "H79.2307",
     "credits": "4 credits",
     "description": "Facilitates the creative use of the World Wide Web as a medium for new artistic, journalistic, personal, and commercial projects. Discussions look toward future possibilities while grounding projects in the economic and technological realities of the present moment. Class format is a combination of technical lectures, troubleshooting sessions, guest presentations, student demos, and critiques. Students begin with a thorough examination of HTML and its extensions, then proceed with introductions to various presentation and scripting possibilities. The level of inquiry is more of an introductory broad survey than an in-depth investigation of any particular technology. Students design and implement one or more Web sites of their own and demonstrate their works-in-progress frequently. Students may be asked to work in groups, write essays, and participate in investigative exercises.",
@@ -4592,7 +4592,7 @@
   {
     "title": "Emergent Communities",
     "year": 2003,
-    "instructor": "Jobnson",
+    "instructor": "Johnson",
     "catalog_number": "H79.2225",
     "credits": "4 credits",
     "description": "Can online communities re-create the dynamic, self-organizing vitality of traditional urban neighborhoods?  Will of the Web turn out to be more like Greenwich Village or a car-centric city like Phoenix? Issues addressed include collaborative filtering; Web urbanism; Netscan; Plastic and Slashdot; The Sims Online. Readings from Johnson's Emergence, Jane Jacobs's The Death and Life of the Great American Cities; Kevin Lynch's The Image of the City. Course work includes critical essays and one creative project.",
@@ -4646,7 +4646,7 @@
   {
     "title": "Postlinear Narrative",
     "year": 2003,
-    "instructor": "Rusbkoff",
+    "instructor": "Rushkoff",
     "catalog_number": "H79.2261",
     "credits": "4 credits",
     "description": "This laboratory class considers the impact of interactivity and technology on traditional narrative structure and explores new methods for conveying narrative in nonlinear and interactive forms of art, entertainment, and communications. Each class meeting is broken up into two parts. The first examines an aspect of traditional narrative and the way it is threatened or rendered obsolete in an interactive context. The second takes the form of workshop exercises and short projects through which alternative narrative forms specifically suited for an interactive environment are conceived, prototyped, and evaluated. Students also develop longer-term experiments in interactive narrative, developing rule sets through which emergent narratives may develop.",
@@ -5546,7 +5546,7 @@
   {
     "title": "Theoretical Perspectives on Interactivity",
     "year": 2005,
-    "instructor": "Rusbkoff",
+    "instructor": "Rushkoff",
     "catalog_number": "H79.2440",
     "credits": "4 credits",
     "description": "The emergence of interactive technologies has profoundly altered our relationship to media and art from the position of passive spectators to that of active players. For longer than we might imagine, cultural theorists have foreseen these shifts, feared them, fought for them, celebrated them, and, clearly, misunderstood them. This seminar explores the thread of interactivity in cultural media as well as the opportunities and perils posed by the associated rise of mass interpretation, authorship, and bottom-up organization. The course traces the interactive imperative, from animated cave paintings and the alphabet to cut-and-paste novels and open source programming. Students encounter literary perspectives from Walter Benjamin to William Burroughs, media theory from Walter Ong to Baudrillard, social critique from Spinoza to Adorno, cultural programming from Genesis P-Orridge to Donna Harraway, and play theory from Huizinga to Howard Rheingold, all in the context of the relationship of interactivity to autonomy and agency. The course also covers the ideas and intentions of some of networking technology's pioneers, from Vannevar Bush to Norbert Weiner. Students are required to read approximately one book per week, lead one class discussion, supplement one class discussion with audiovisual resources, and write two short papers arguing a cogent theoretical perspective on new media.",
@@ -5771,7 +5771,7 @@
   {
     "title": "Final Project Seminar: Thesis",
     "year": 2005,
-    "instructor": "Barton, Baxi, Greenberg, Greer; Hechinger; Migliorelli, Sbirky, Wilson, Zimmerman, Zurkow",
+    "instructor": "Barton, Baxi, Greenberg, Greer, Hechinger, Migliorelli, Shirky, Wilson, Zimmerman, Zurkow",
     "catalog_number": "H79.2102",
     "credits": "4 credits",
     "description": "This course is designed to help students define and execute their final project in a setting that is both collegial and critical. It is structured as a series of critique and presentation sessions in which various aspects of individual projects are discussed: the project concept, the elaboration, the presentation, the process and timetable, the resources needed to accomplish it, and the documentation. Critique sessions are a combination of internal sessions (i.e., the class only) and reviews by external guest critics. Students are expected to complete a fully articulated thesis project description and related documentation. Final project prototypes are displayed both on the Web and in a public showcase.",
@@ -6842,7 +6842,7 @@
   {
     "title": "Final Project Seminar: Thesis",
     "year": 2007,
-    "instructor": "Barton, Brucker-Coben, Greenberg, Greer, Hechinger, Law, Migliorelli, Rabbino, Shirky, Smith, Tiersky, Wilson",
+    "instructor": "Barton, Brucker-Cohen, Greenberg, Greer, Hechinger, Law, Migliorelli, Rabbino, Shirky, Smith, Tiersky, Wilson",
     "catalog_number": "H79.2102",
     "credits": "4 credits",
     "description": "This course is designed to help students define and execute their final project in a setting that is both collegial and critical. It is structured as a series of critique and presentation sessions in which various aspects of individual projects are discussed: the project concept, the elaboration, the presentation, the process and timetable, the resources needed to accomplish it, and the documentation. Critique sessions are a combination of internal sessions (i.e., the class only) and reviews by external guest critics. Students are expected to complete a fully articulated thesis project description and related documentation. Final project prototypes are displayed both on the Web and in a public showcase.",
@@ -7976,7 +7976,7 @@
   {
     "title": "Spatial Media",
     "year": 2009,
-    "instructor": "Schiffman",
+    "instructor": "Shiffman",
     "catalog_number": "H79.2756",
     "credits": "4 credits",
     "description": "Computer screens are nothing new. But what happens to the screen when it becomes a table or a mirror or a sidewalk? How does one design for such a screen? This course explores how interactive media can be integrated into physical spaces and furniture through the creative use of projectors and embedded displays. The course also examines the multitude of questions that arise when designing for this type of media. Emphasis is placed on the role of spatial and social context and the importance of relevant content within each of these environments. Technical topics include display integration techniques, vision based sensing, physical sensing, and methods of fabrication. Students will work in pairs to complete two large projects over the course of the semester. These projects are evaluated on both the quality of the design and the success of implementation. Additionally, there are weekly assignments that challenge students to consider a wide variety of spaces that are ripe for transformation through the integration of digital media. Since this course involves programming on an intermediate level, a working knowledge of Processing or C is a prerequisite.",
@@ -8066,7 +8066,7 @@
   {
     "title": "Final Project Seminar: Thesis",
     "year": 2009,
-    "instructor": "Barton, Brucker-Cohen, D’Arcangelo, Greenberg, Greer, Hechinger, Papadopolous, Rabbino, Shirky, Smith, Wilson",
+    "instructor": "Barton, Brucker-Cohen, D’Arcangelo, Greenberg, Greer, Hechinger, Papadopoulos, Rabbino, Shirky, Smith, Wilson",
     "catalog_number": "H79.2102",
     "credits": "4 credits",
     "description": "This course is designed to help students define and execute their final project in a setting that is both collegial and critical. It is structured as a series of critique and presentation sessions in which various aspects of individual projects are discussed: the project concept, the elaboration, the presentation, the process and timetable, the resources needed to accomplish it, and the documentation. Critique sessions are a combination of internal sessions (i.e., the class only) and reviews by external guest critics. Students are expected to complete a fully articulated thesis project description and related documentation. Final project prototypes are displayed both on the Web and in a public showcase.",
@@ -9101,7 +9101,7 @@
   {
     "title": "Spatial Media",
     "year": 2011,
-    "instructor": "Schiffman",
+    "instructor": "Shiffman",
     "catalog_number": "ITPG-GT 2756",
     "credits": "4 credits",
     "description": "Computer screens are nothing new. But what happens to the screen when it becomes a table or a mirror or a sidewalk? How does one design for such a screen? This course explores how interactive media can be integrated into physical spaces and furniture through the creative use of projectors and embedded displays. The course also examines the multitude of questions that arise when designing for this type of media. Emphasis is placed on the role of spatial and social context and the importance of relevant content within each of these environments. Technical topics include display integration techniques, vision-based sensing, physical sensing, and methods of fabrication. Students will work in pairs to complete two large projects over the course of the semester. These projects are evaluated on both the quality of the design and the success of implementation. Additionally, there are weekly assignments that challenge students to consider a wide variety of spaces that are ripe for transformation through the integration of digital media. Since this course involves programming on an intermediate level, a working knowledge of Processing or C is a prerequisite.",
@@ -9470,7 +9470,7 @@
   {
     "title": "Final Project Seminar: Thesis",
     "year": 2011,
-    "instructor": "Barton, D'Arcangelo, Greer, Hechinger, Papadopolous, Rabbino, Shirky, Wilson",
+    "instructor": "Barton, D'Arcangelo, Greer, Hechinger, Papadopoulos, Rabbino, Shirky, Wilson",
     "catalog_number": "ITPG-GT 2102",
     "credits": "4 credits",
     "description": "This course is designed to help students define and execute their final project in a setting that is both collegial and critical. It is structured as a series of critique and presentation sessions in which various aspects of individual projects are discussed: the project concept, the elaboration, the presentation, the process and timetable, the resources needed to accomplish it, and the documentation. Critique sessions are a combination of internal sessions (i.e., the class only) and reviews by external guest critics. Students are expected to complete a fully articulated thesis project description and related documentation. Final project prototypes are displayed both on the Web and in a public showcase.",
@@ -10424,7 +10424,7 @@
   {
     "title": "Spatial Media",
     "year": 2013,
-    "instructor": "Schiffman",
+    "instructor": "Shiffman",
     "catalog_number": "ITPG-GT 2756",
     "credits": "4 credits",
     "description": "Computer screens are nothing new. But what happens to the screen when it becomes a table or a mirror or a sidewalk? How does one design for such a screen? This course explores how interactive media can be integrated into physical spaces and furniture through the creative use of projectors and embedded displays. The course also examines the multitude of questions that arise when designing for this type of media. Emphasis is placed on the role of spatial and social context and the importance of relevant content within each of these environments. Technical topics include display integration techniques, vision-based sensing, physical sensing, and methods of fabrication. Students will work in pairs to complete two large projects over the course of the semester. These projects are evaluated on both the quality of the design and the success of implementation. Additionally, there are weekly assignments that challenge students to consider a wide variety of spaces that are ripe for transformation through the integration of digital media. Since this course involves programming on an intermediate level, a working knowledge of Processing or C is a prerequisite.",
@@ -10784,7 +10784,7 @@
   {
     "title": "Final Project Seminar: Thesis",
     "year": 2013,
-    "instructor": "Barton, D’Arcangelo, Greer, Hechinger, Papadopolous, Rabbino, Shirky, Wilson",
+    "instructor": "Barton, D’Arcangelo, Greer, Hechinger, Papadopoulos, Rabbino, Shirky, Wilson",
     "catalog_number": "ITPG-GT 2102",
     "credits": "4 credits",
     "description": "This course is designed to help students define and execute their final project in a setting that is both collegial and critical. It is structured as a series of critique and presentation sessions in which various aspects of individual projects are discussed: the project concept, the elaboration, the presentation, the process and timetable, the resources needed to accomplish it, and the documentation. Critique sessions are a combination of internal sessions (i.e., the class only) and reviews by external guest critics. Students are expected to complete a fully articulated thesis project description and related documentation. Final project prototypes are displayed both on the Web and in a public showcase.",
@@ -10937,7 +10937,7 @@
   {
     "title": "Micro-Environment Exploration Lab",
     "year": 2018,
-    "instructor": "Chris Woebken / Elizabeth Henaff",
+    "instructor": "Chris Woebken, Elizabeth Henaff",
     "catalog_number": "ITPG.GT.2152",
     "credits": "2 credits",
     "description": "Metagenomics is the field of research which investigates the microbial component of the environment. It is a rapidly growing field, enabled by the recent decrease in cost and increase in throughput of DNA sequencing technology. We can now measure the microbial component of our environment and have the opportunity to incorporate this new microbial metric into the design of our built environments and products. In this class we will cover a basic understanding of the state of current research in environmental microbiomes. Students will get hands-on experience in which they will collect their own samples, obtain DNA sequences, and learn the computational methods to analyze genomic data. We will design physical devices to interact with this invisible component of our environment, either in form of sampling instruments, bioreactors or bio receptive substrates that propose new symbiotic relationships with the microbial environment. By the completion of this course, students will be able to: * Understand of the state of current research in environmental microbiomes * Hands on experience gathering samples and computational methods for DNA sequence analysis for individual samples and comparative methods for large datasets * Introduce speculative thinking to their practice * Materialize concepts with new strategies for rapid product prototyping * Develop technological visions that provoke thought rather than communicate a vision of how things will or should be  We will work with free and publicly available datasets. Students that are interested in gathering their own sequence data, should expect to cover $200 for outside lab costs (optional).",
@@ -11009,7 +11009,7 @@
   {
     "title": "Developing Assistive Technologies",
     "year": 2018,
-    "instructor": "Claire Kearney-Volpe / Scott Fitzgerald / Anita Perr",
+    "instructor": "Claire Kearney-Volpe, Scott Fitzgerald, Anita Perr",
     "catalog_number": "ITPG.GT.2446",
     "credits": "3 credits",
     "description": "This multi-disciplinary course allows students from a variety of backgrounds to work together to learn about and develop assistive technology. Partnering with outside organizations, students will work in teams to identify a clinical need relevant to a certain clinical site or client population, and learn the process of developing an idea and following that through to the development of a prototype product. This course provides an overview of some of the assistive technologies currently used by people with disabilities to participate in life's activities, including those used for computer access, mobility, and activities of daily living (ADLs). Working in small groups, you will work with a mentor with a disability to solve a problem by creating a tech solution making the problem easier to deal with. We have a number of ongoing projects such as developing interactive activities to improve balance of pre-schoolers with hearing impairments and cochlear implants, or working with a deaf woman in Argentina to develop a tool that can allow her to participate in group discussions. Other projects may include working with people with physical and sensory disabilities. This course provides you your own evidence of the benefit of using client centered design with input from multiple professionals.",
@@ -11027,7 +11027,7 @@
   {
     "title": "Alt Docs: Inventing New Formats for Non-Fiction Storytelling",
     "year": 2018,
-    "instructor": "Julia Irwin / Ziv Schneider",
+    "instructor": "Julia Irwin, Ziv Schneider",
     "catalog_number": "ITPG.GT.2018",
     "credits": "4 credits",
     "description": "How does the ability to capture and publish interactive media lend itself to documentary storytelling? How are traditional genres enriched by the addition of new-media techniques, such as 360 video and volumetric capture? How can the use of these techniques help to evolve the definition of nonfiction storytelling? The goal of the class is to investigate the merging and branching of documentary, journalism and games and to explore ways to innovate in this frontier. The class focuses on two main technical areas: 1. Capture methods (including 360 video and 3D scanning). 2. Composition of material in a 3D environment in Unity3D: adding interactivity, interface design, optimization and publishing considerations. This is a production class in which the projects will be content-driven. A successful project is one where the story is better told through the incorporation of the mediums chosen over a traditional cinematic documentary or journalistic piece. The final project students will create a prototype for an interactive documentary piece in a digital 3D environment composed with Unity. The students are also encouraged to combine other components into their projects (such as sculpture, performance, web experiments and public interventions).",
@@ -11054,7 +11054,7 @@
   {
     "title": "Bodies in Motion",
     "year": 2018,
-    "instructor": "Todd Bryant / Kathleen Sullivan",
+    "instructor": "Todd Bryant, Kathleen Sullivan",
     "catalog_number": "ITPG.GT.2773",
     "credits": "4 credits",
     "description": "Course Description: This course provides an introduction to the concepts of motion capture and the motion capture production pipeline to perform and record 3D animations for film and video games as well as stream for live performances. Students will learn all of the tools for tracking props and performers using MAGNET's cutting edge motion capture studio. Students will also develop concepts around the technology and integrate their data into 3D computer graphics along with keyframe and procedural animation and custom 3D assets to build final projects using the Unreal game engine. Program Learning Objectives: To design a workflow of MoCap and 'how to' guides for diverse type of projects using motion capture and the basics of world and character building in the game engine Unreal. Reading assignments introduce students to constructed historical perspective of MoCap and investigates principles particular to animation and performance. The objective of the course is to allow students to understand the importance of pre-production and planning which includes notions of storytelling, 3D modelling and texturing, best practices to capture the sessions, world building methods in video art and game development, and live show running. Course Objectives . To create storyboards and define recording shots before capturing data. . To understand and use the correct motion capture pipeline . To learn the skills to direct an effective motion capture session (best calibration) . To learn the best practices for capturing and cleaning data . To be able to apply the data to models in Maya, Unreal Engine, and Max/Jitter . To be able to perform real-time retargeting for Live Performances Course Structure The class consists of a weekly lecture and a weekly 2 hour lab session. Students will work in groups and will be required to attend a self-selected lab session on weekends. Examples of motion capture projects will be presented in lectures and discussed in the classroom. Students must demonstrate satisfactory achievement of course objectives through fulfillment of one final project at the end of the semester and a mandatory submission for the programs showcase. Final projects will require students to use a wide variety of software and studio time at MAGNET's black box mocap studio. Students will be able to process their motion capture data for use in an animation or live performance. Collaboration with students and faculty from other programs is encouraged. This four-credit course will meet at 2 Metrotech, Brooklyn, NY.",
@@ -11216,7 +11216,7 @@
   {
     "title": "The Independent Business",
     "year": 2018,
-    "instructor": "Joshua Knowles / Jennifer van der Meer",
+    "instructor": "Joshua Knowles, Jennifer van der Meer",
     "catalog_number": "ITPG.GT.2165",
     "credits": "4 credits",
     "description": "Most businesses achieve success without raising millions of dollars or becoming the media darling start-up unicorn du jour. That's what we'll focus on: how can you corral the resources you have available right now to turn an idea you're passionate about into a functional business? Maybe you're looking for a \"lifestyle\" business - something that fits into your existing life and interests. Or maybe you do want to drive hard and compete, but you want to run your business on your terms and for your benefit without being steered by investors. Even if you do find the idea of hitting the VC jackpot compelling, you still have to take your first baby steps and prove your business first. Many ITP alums and professors have gone down this path of the smaller, independent business with great success. We'll explore how these businesses (and others) have found their niches. And we'll adapt methods from business school and startup accelerators that optimize for focusing on customer needs, establishing a business model, and validating your work by getting to that first sale. Join this class to work as an individual or with a team.",
@@ -11261,7 +11261,7 @@
   {
     "title": "Algorithmic Composition",
     "year": 2018,
-    "instructor": "Dubois",
+    "instructor": "DuBois",
     "catalog_number": "ITPG-GT.2524",
     "credits": "4 credits",
     "description": "This class looks at ways to compose music using algorithms. Drawing from both computer-age and precomputer repertoire and literature on writing music procedurally, the class will look at different topics and issues in the automatic or rule-based generation of music in both pre-compositional and real-time interactive environments. Students are expected to make a series of musical studies investigating different systems covered in class, ranging from stochastic music to rule-based grammar models to data mining. No specific knowledge of music theory is required, though a basic understanding of MIDI, digital sound, and some of the tools for manipulating them are useful. A broad overview of the history and repertoire of algorithmic music is covered in weekly listening presentations.",
