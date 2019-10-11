@@ -67,6 +67,7 @@ export default {
 
 .scrollContainer {
   overflow-x: scroll;
+  pointer-events: auto;
 }
 
 .description {
