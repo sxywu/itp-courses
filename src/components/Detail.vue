@@ -1,10 +1,16 @@
 <template>
   <div id='detail'>
     <svg class='years' :width='width' :height='height'>
+      <defs>
+        <pattern id="texture" patternUnits="userSpaceOnUse" width="8" height="8">
+          <path d="M 0,8 l 8,-8 M -2,2 l 4,-4 M 6,10 l 4,-4" stroke-width="1"
+          shape-rendering="auto" stroke="#cfcfcf" stroke-linecap="square" />
+        </pattern>
+      </defs>
       <!-- selected year -->
       <g :transform='`translate(0, ${rectsTop})`'>
         <rect :x='rect.x' :width='rect.width' :height='rect.height'
-          fill='#f0f0f0' @click='$store.commit(`setYear`, d.year)' />
+          @click='$store.commit(`setYear`, d.year)' style='fill: url("#texture")' />
       </g>
     </svg>
     <svg class='classes' :width='width' :height='classesHeight'>
