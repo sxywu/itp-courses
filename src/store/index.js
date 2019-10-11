@@ -26,7 +26,7 @@ export default new Vuex.Store({
     },
     radiusScale(state, {nodes}) {
       const domain = d3.extent(nodes, d => d.count)
-      return d3.scaleSqrt().domain(domain).range([8, 20])
+      return d3.scaleSqrt().domain(domain).range([5, 20])
     },
     // for getting the raw data version
     classesForGalaxy({galaxy, classes}) {
@@ -95,6 +95,8 @@ export default new Vuex.Store({
           .filter(d => d.words.length)
           .groupBy('group')
           .map((classes, id) => {
+            const years = _.chain(classes).map('year').flatten().uniq().value()
+
             // get all the words from all the classes and aggregate
             const words = _.chain(classes)
               .map('words').flatten().filter()
@@ -111,20 +113,18 @@ export default new Vuex.Store({
                   group: id,
                 }
               }).value()
-            // now make nodes for each class (grouped by ID)
-            let year = 2020
+
             classes = _.chain(classes)
               .groupBy('course')
-              .filter(classes => classes.length > 1)
+              // it's either a 2018 class or it only happened once
+              .filter(classes => classes[0].year === 2018 || classes.length > 1)
               .map(classes => {
                 classes = _.sortBy(classes, 'year')
                 const years = _.chain(classes).map('year').sortBy().value()
-                year = Math.min(year, years[0]) // remember earliest year for galaxy
-
                 return {
                   id: classes[0].course,
                   count: classes.length,
-                  years, medianYear: d3.median(years),
+                  medianYear: d3.median(years),
                   title: _.last(classes).title,
                   group: id,
                 }
@@ -135,8 +135,7 @@ export default new Vuex.Store({
               title: groupsById[id].title,
               classes,
               words,
-              years: _.chain(classes).map('years').flatten().uniq().value(),
-              year,
+              years,
             }
           }).filter(d => d.classes.length && d.words.length)
           .sortBy(d => -d.classes.length - d.words.length)
@@ -148,7 +147,7 @@ export default new Vuex.Store({
         commit('setClasses', classes)
         commit('setWords', words)
         commit('setGalaxies', galaxies)
-        commit('setGalaxy', galaxies[0])
+        commit('setGalaxy', galaxies[1])
       })
     },
   }

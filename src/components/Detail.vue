@@ -16,11 +16,11 @@
     <svg class='classes' :width='width' :height='classesHeight'>
       <!-- top half: timeline of classes -->
       <g v-for='d in planets' :transform='`translate(0, ${d.y})`'>
-        <circle :cx='d.x1' r='2' />
-        <line :x1='d.x2' :x2='d.x2' y1='-3.5' y2='3.5' stroke='#333' />
+        <circle :cx='d.x1' r='2.5' />
+        <line :x1='d.x2' :x2='d.x2' y1='-2.5' y2='2.5' stroke='#333' />
         <line :x1='d.x1' :x2='d.x2' stroke='#333' stroke-width='2' />
         <Planet v-bind='{d: d.planet}' />
-        <g :transform='`translate(${d.x2 + 6}, 0)`'>
+        <g :transform='`translate(${d.x2 + 8}, 0)`'>
           <text :dy='`${d.text.titleY}em`'>{{ d.text.title }}</text>
           <text class='years' :opacity='d.text.yearOpacity' dy='1em'>{{ d.text.year1 }}
             <tspan v-if='d.text.year1 !== d.text.year2'> - {{ d.text.year2 }}</tspan>
@@ -141,7 +141,9 @@ export default {
         .sortBy(classes => d3.min(classes, d => d.year))
         .map((classes, i) => {
           const min = d3.min(classes, d => d.year)
-          const max = d3.max(classes, d => this.years[_.indexOf(this.years, d.year) + 1])
+          const max = d3.max(classes, d => this.years[
+            Math.min(_.indexOf(this.years, d.year) + 1, this.years.length - 1)
+          ])
           const x = this.xScale(min)
           const r = this.radiusScale(classes.length)
           const height = Math.max(2 * r + 10, 28)
@@ -210,18 +212,16 @@ export default {
     calculateRects() {
       if (!this.galaxy) return
 
-      this.rects = _.chain(this.galaxy.years)
-        .map(year => {
-          const next = this.years[_.indexOf(this.years, year) + 1]
-          if (!next) return
-          const x = this.xScale(year)
+      this.rects = _.map(this.galaxy.years, year => {
+        let next = this.years[_.indexOf(this.years, year) + 1] || 2020
+        const x = this.xScale(year)
 
-          return {
-            x, width: this.xScale(next) - x,
-            y: 0, height: this.height,
-            year,
-          }
-        }).dropRight().value()
+        return {
+          x, width: this.xScale(next) - x,
+          y: 0, height: this.height,
+          year,
+        }
+      })
       this.rect = _.find(this.rects, d => d.year === this.year)
     },
     renderAxis() {
