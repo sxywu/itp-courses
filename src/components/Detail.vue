@@ -1,10 +1,5 @@
 <template>
   <div id='detail'>
-    <svg class='years' :width='width' :height='docHeight'>
-      <!-- selected year -->
-      <rect v-for='d in rects' :x='d.x' :width='d.width' :height='d.height'
-        fill='#f0f0f0' :opacity='d.opacity' @click='$store.commit(`setYear`, d.year)' />
-    </svg>
     <svg class='classes' :width='width' :height='classesHeight'>
       <!-- top half: timeline of classes -->
       <g v-for='d in planets' :transform='`translate(0, ${d.y})`'>
@@ -22,15 +17,24 @@
       <!-- axis -->
       <g ref='xAxis' :transform='`translate(0, ${axisY})`' />
     </svg>
-    <div ref='scrollContainer' class='scrollContainer' :style='{
-      height: `${height}px`,
-    }'>
-      <svg class='words' :width='width' :height='wordsHeight'>
-        <!-- bottom half: line chart of words -->
+    <svg class='words' :width='width' :height='wordsHeight'>
+      <!-- bottom half: line chart of words -->
+      <g :transform='`translate(0, ${wordsTop})`'>
         <g v-for='d in stars' :transform='`translate(0, ${d.y})`'>
           <path :d='d.path' fill='none' stroke='#999' stroke-dasharray='5' />
           <Star v-for='d in d.stars' v-bind='{d}' />
           <text :x='d.x2 + 10' :y='d.y2' dy='.35em'>{{ d.word }}</text>
+        </g>
+      </g>
+    </svg>
+    <div ref='scrollContainer' class='scrollContainer' :style='{
+      height: `${docHeight}px`,
+    }'>
+      <svg class='years' :width='width' :height='height'>
+        <!-- selected year -->
+        <g :transform='`translate(0, ${rectsTop})`'>
+          <rect v-for='d in rects' :x='d.x' :width='d.width' :height='d.height'
+            fill='#f0f0f0' :opacity='d.opacity' @click='$store.commit(`setYear`, d.year)' />
         </g>
       </svg>
     </div>
@@ -63,6 +67,8 @@ export default {
       axisY: 0,
       classesHeight: 0, // for animation
       wordsHeight: 0,
+      wordsTop: 0,
+      rectsTop: 0,
     }
   },
   mounted() {
@@ -107,6 +113,7 @@ export default {
   },
   watch: {
     galaxy() {
+      this.initializeScroll()
       this.calculateData()
       this.calculateRects()
       this.calculateScroll()
@@ -189,7 +196,7 @@ export default {
         }).value()
 
       this.wordsHeight = y + descHeight
-      this.height = docHeight - this.classesHeight
+      this.height = this.classesHeight + this.wordsHeight
     },
     calculateRects() {
       if (!this.galaxy) return
@@ -202,7 +209,7 @@ export default {
 
           return {
             x, width: this.xScale(next) - x,
-            height: docHeight,
+            y: 0, height: this.height,
             opacity: +(this.year === year),
             year,
           }
@@ -213,42 +220,51 @@ export default {
       d3.select(this.$refs.xAxis).call(this.xAxis)
         .selectAll('text').style('user-select', 'none')
     },
+    initializeScroll() {
+      this.wordsTop = 0,
+      this.rectsTop = 0,
+      this.$refs.scrollContainer.scrollTop = 0
+    },
     handleScroll() {
       const scrollTop = this.$refs.scrollContainer.scrollTop
+      const total = this.height - docHeight
 
-      if (scrollTop > this.height) return
-      const progress = scrollTop / this.height
+      if (scrollTop > total) return
+      const progress = scrollTop / total
       this.tl.progress(progress)
     },
     calculateScroll() {
       this.tl.clear()
+      const duration = 0.4
 
       // first, animate the courses radius
-      this.tl.staggerTo(_.map(this.planets, 'planet'), 0.1, {
+      this.tl.staggerTo(_.map(this.planets, 'planet'), duration / 2, {
         r: 0,
       }, 0, 0)
 
-      this.tl.staggerTo(this.planets, 0.2, {
+      // animate the planets up
+      this.tl.staggerTo(this.planets, duration, {
         cycle: {y: i => i * collapsedClassesHeight + margin.top},
       }, 0, 0)
+      // animate the clases height
       const classesHeight = this.planets.length * collapsedClassesHeight + margin.top + margin.bottom
-      this.tl.to(this.$data, 0.2, {
-        height: docHeight - classesHeight,
+      this.tl.to(this.$data, duration, {
         classesHeight,
         axisY: classesHeight - margin.bottom,
       }, 0)
 
       // fade years text
-      this.tl.staggerTo(_.map(this.planets, 'text'), 0.1, {
+      this.tl.staggerTo(_.map(this.planets, 'text'), duration / 3, {
         yearOpacity: 0,
       }, 0, 0)
-      this.tl.staggerTo(_.map(this.planets, 'text'), 0.2, {
+      this.tl.staggerTo(_.map(this.planets, 'text'), duration, {
         titleY: 0.35,
       }, 0, 0)
 
-      // adjust year rect height
-      this.tl.to(this.rects, 1, {
-        height: docHeight - descHeight,
+      // adjust year rect height and word top
+      this.tl.to(this.$data, 1, {
+        rectsTop: -descHeight + margin.bottom / 2,
+        wordsTop: -this.wordsHeight + (docHeight - classesHeight),
       }, 0)
     },
   }
@@ -265,13 +281,9 @@ export default {
 
 .scrollContainer {
   overflow: scroll;
-}
-
-svg.years {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
 }
 
 text {
