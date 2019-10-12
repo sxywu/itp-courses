@@ -90,12 +90,15 @@ export default new Vuex.Store({
 
         // calculate galaxies from the two datasets
         // NOTE: had to filter out classes that only happened once, and those with no keywords
+        const classesByCourse = _.groupBy(classes, 'course')
         const groupsById = _.keyBy(groups, 'id')
         const galaxies = _.chain(classes)
           .filter(d => d.words.length)
           .groupBy('group')
           .map((classes, id) => {
-            const years = _.chain(classes).map('year').flatten().uniq().value()
+            classes = _.chain(classes).map(({course}) => classesByCourse[course])
+              .flatten().uniqBy('id').value()
+            const years = _.chain(classes).map('year').flatten().uniq().sortBy().value()
 
             // get all the words from all the classes and aggregate
             const words = _.chain(classes)
