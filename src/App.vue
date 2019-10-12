@@ -2,7 +2,7 @@
   <div id="app">
     <div id='header'>
       <h1>Forty Years of ITP Classes</h1>
-      data by <span class='name'>Jim Schmitz</span> // visualizations by <span class='name'>Shirley Wu</span>
+      <em>data by <span class='name'>Jim Schmitz</span> // visualizations by <span class='name'>Shirley Wu</span></em>
     </div>
 
     <Galaxies />
