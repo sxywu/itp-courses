@@ -5,6 +5,8 @@ import * as d3 from 'd3'
 
 Vue.use(Vuex)
 
+let sinceLastActivity = 0
+
 export default new Vuex.Store({
   state: {
     width: 1080,
@@ -16,6 +18,7 @@ export default new Vuex.Store({
     years: [],
     year: 1980,
     twinkle: false, // for ANIMATION
+    displayInstructions: 'none',
   },
   getters: {
     nodes({galaxies}) {
@@ -69,6 +72,11 @@ export default new Vuex.Store({
     },
     toggleTwinkle(state) {
       state.twinkle = !state.twinkle
+    },
+    setDisplayInstructions(state, display) {
+      if (state.displayInstructions === display) return
+      state.displayInstructions = display
+      sinceLastActivity = 0
     }
   },
   actions: {
@@ -152,6 +160,24 @@ export default new Vuex.Store({
         commit('setGalaxies', galaxies)
         commit('setGalaxy', galaxies[1])
       })
+    },
+    startTimer({ commit }) {
+      const interval = 800
+      setInterval(() => {
+        // first, star twinkle
+        commit('toggleTwinkle')
+
+        // add interval to sinceLastActivity
+        sinceLastActivity += interval
+        // if it's been more than 2min
+        if (sinceLastActivity > 2000) {
+          // then i want to start the instructions
+          commit('setDisplayInstructions', 'block')
+        }
+      }, interval)
+    },
+    resetActivity() {
+      sinceLastActivity = 0
     },
   }
 })

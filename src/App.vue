@@ -9,6 +9,8 @@
     <h2>{{ selectedGalaxy.title }}</h2>
     <Detail />
     <Descriptions />
+
+    <Instructions />
   </div>
 </template>
 
@@ -18,10 +20,11 @@ import _ from 'lodash'
 import Galaxies from './components/Galaxies.vue'
 import Detail from './components/Detail.vue'
 import Descriptions from './components/Descriptions.vue'
+import Instructions from './components/Instructions.vue'
 
 export default {
   name: 'app',
-  components: {Galaxies, Detail, Descriptions},
+  components: {Galaxies, Detail, Descriptions, Instructions},
   data() {
     return {
       hovered: null,
@@ -31,7 +34,14 @@ export default {
     this.$store.dispatch('getRawData')
   },
   mounted() {
-    this.twinkleStars()
+    this.sinceLastActivity = 0
+
+    document.addEventListener('mousemove', this.registerActivity)
+    _.map(document.querySelectorAll('.scrollContainer'), el => {
+      el.addEventListener('scroll', this.registerActivity)
+    })
+
+    this.$store.dispatch('startTimer')
   },
   computed: {
     selectedGalaxy() {
@@ -39,14 +49,8 @@ export default {
     },
   },
   methods: {
-    twinkleStars() {
-      let prev = 0
-      d3.timer(elapsed => {
-        if (elapsed - prev > 400) {
-          this.$store.commit('toggleTwinkle')
-          prev = elapsed
-        }
-      })
+    registerActivity() {
+      this.$store.dispatch('resetActivity')
     },
   }
 }
