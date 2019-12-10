@@ -87,10 +87,7 @@ export default {
 }
 
 .word {
-  display: inline-block;
-  background: #333;
-  color: #fff;
-  padding: 0 3px;
-  margin: 1px 0;
+  font-weight: bold;
+  font-style: italic;
 }
 </style>
