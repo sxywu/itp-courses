@@ -169,8 +169,9 @@ export default new Vuex.Store({
 
         // add interval to sinceLastActivity
         sinceLastActivity += interval
+        console.log(sinceLastActivity)
         // if it's been more than 1min
-        if (sinceLastActivity > (60 * 1000)) {
+        if (sinceLastActivity > (30 * 1000)) {
           // then i want to start the instructions
           commit('setDisplayInstructions', 'block')
         }

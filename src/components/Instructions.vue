@@ -43,8 +43,8 @@ export default {
     }
   },
   mounted() {
-    const duration = 4
-    const animationDuration = 1
+    const duration = 5
+    const animationDuration = 2
 
     // create timeline
     this.tl = new TimelineMax({
@@ -65,9 +65,6 @@ export default {
     this.tl.add(() => {
       this.$store.commit('setDisplayInstructions', 'none')
     })
-    this.tl.add(() => {
-      this.$store.commit('setDisplayInstructions', 'block')
-    }, `+=${duration}`)
   },
 }
 </script>
