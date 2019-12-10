@@ -20,7 +20,7 @@ export default {
       images: _.times(numInstructions, i => {
         return {
           src: require(`../assets/instructions${i + 1}.png`),
-          opacity: (i === numInstructions - 1) ? 1 : 0,
+          opacity: 0,
         }
       }),
     }
@@ -38,26 +38,19 @@ export default {
       if (this.display === 'block') {
         this.tl.restart()
       } else if (this.display === 'none') {
-        this.tl.pause()
+        this.tl.stop()
       }
     }
   },
   mounted() {
-    const duration = 1
+    const duration = 4
     const animationDuration = 1
 
     // create timeline
-    const lastImage = _.last(this.images)
     this.tl = new TimelineMax({
       paused: true, repeat: -1,
       onStart: () => {
-        console.log(lastImage.opacity)
-        lastImage.opacity = 0
         this.$store.commit('setGalaxy', this.galaxies[1])
-      },
-      onRepeat: () => {
-        // on repeat, fade the last image
-        TweenLite.fromTo(lastImage, animationDuration, {opacity: 1}, {opacity: 0})
       },
     })
 
@@ -66,12 +59,15 @@ export default {
       // first fade opacity in
       this.tl.to(d, animationDuration, {opacity: 1}, i * duration)
       // then fade it out if it's not the last one
-      if (i < numInstructions - 1) {
-        this.tl.to(d, animationDuration, {opacity: 0}, (i + 1) * duration)
-      } else {
-        this.tl.set(d, {opacity: 1}, (i + 1) * duration)
-      }
+      this.tl.to(d, animationDuration, {opacity: 0}, (i + 1) * duration)
     })
+
+    this.tl.add(() => {
+      this.$store.commit('setDisplayInstructions', 'none')
+    })
+    this.tl.add(() => {
+      this.$store.commit('setDisplayInstructions', 'block')
+    }, `+=${duration}`)
   },
 }
 </script>

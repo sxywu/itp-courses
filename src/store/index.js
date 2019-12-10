@@ -162,15 +162,15 @@ export default new Vuex.Store({
       })
     },
     startTimer({ commit }) {
-      const interval = 800
+      const interval = 600
       setInterval(() => {
         // first, star twinkle
         commit('toggleTwinkle')
 
         // add interval to sinceLastActivity
         sinceLastActivity += interval
-        // if it's been more than 2min
-        if (sinceLastActivity > 2000) {
+        // if it's been more than 1min
+        if (sinceLastActivity > (60 * 1000)) {
           // then i want to start the instructions
           commit('setDisplayInstructions', 'block')
         }
