@@ -166,7 +166,8 @@ export default {
         }).sortBy(({count}) => -count)
         .map((d, i) => Object.assign(d, {
           planet: Object.assign(d.planet, {
-            ring: i < (this.classes.length / 4),
+            ring: i < 0.25 * this.classes.length,
+            line: 0.75 * this.classes.length < i,
             rotate: (i % 2 ? -1 : 1) * _.random(30),
           })
         })).sortBy(({y}) => y).value()

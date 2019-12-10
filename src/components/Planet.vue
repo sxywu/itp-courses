@@ -6,6 +6,7 @@
     <!-- planet's ring -->
     <path v-if='d.ring' d='M1,0 A1.25,0.25 0 1 1 -1,0'
       fill='none' stroke='#333' :stroke-width='2 / d.r' />
+    <line v-if='d.line' x1='-1.5' x2='1.5' stroke='#333' :stroke-width='2 / d.r' />
   </g>
 </template>
 

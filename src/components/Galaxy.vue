@@ -81,6 +81,7 @@ export default {
             r: this.radiusScale(count),
             rotate: (i % 2 ? -1 : 1) * _.random(30),
             ring: i < (classes.length / 4),
+            line: 0.75 * classes.length < i,
           }
         }).value()
 
