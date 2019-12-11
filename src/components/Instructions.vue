@@ -2,14 +2,14 @@
   <div id="instructions" :style='{display}'
     @click='$store.commit("setDisplayInstructions", "none")'>
     <img v-for='d in images' :src='d.src' :style='{
-      width: "100vw", opacity: d.opacity
+      height: "100vh", opacity: d.opacity
     }' />
   </div>
 </template>
 
 <script>
 import * as d3 from 'd3'
-import {TimelineMax, TweenLite} from 'gsap'
+import {TimelineLite, TweenLite} from 'gsap'
 
 const numInstructions = 4
 
@@ -47,12 +47,7 @@ export default {
     const animationDuration = 2
 
     // create timeline
-    this.tl = new TimelineMax({
-      paused: true, repeat: -1,
-      onStart: () => {
-        this.$store.commit('setGalaxy', this.galaxies[1])
-      },
-    })
+    this.tl = new TimelineLite({paused: true})
 
     // loop through each image and turn it on and then off
     _.each(this.images, (d, i) => {
@@ -62,6 +57,21 @@ export default {
       this.tl.to(d, animationDuration, {opacity: 0}, (i + 1) * duration)
     })
 
+    // update galaxy part way during the first instruction
+    _.each([2, 1, 0], (d, i) => {
+      this.tl.add(() => {
+        this.$store.commit('setGalaxy', this.galaxies[d])
+      }, (0.4 + i * 0.2) * duration)
+    })
+
+    // update year part way through third instruction
+    _.each([1992, 2011, 2000], (year, i) => {
+      this.tl.add(() => {
+        this.$store.commit('setYear', year)
+      }, (2.4 + i * 0.2) * duration)
+    })
+
+    // at the end, disable instructions
     this.tl.add(() => {
       this.$store.commit('setDisplayInstructions', 'none')
     })

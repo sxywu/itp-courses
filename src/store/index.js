@@ -158,7 +158,7 @@ export default new Vuex.Store({
         commit('setClasses', classes)
         commit('setWords', words)
         commit('setGalaxies', galaxies)
-        commit('setGalaxy', galaxies[1])
+        commit('setGalaxy', galaxies[0])
       })
     },
     startTimer({ commit }) {
@@ -169,8 +169,7 @@ export default new Vuex.Store({
 
         // add interval to sinceLastActivity
         sinceLastActivity += interval
-        console.log(sinceLastActivity)
-        // if it's been more than 1min
+        // if it's been more than 30secs
         if (sinceLastActivity > (30 * 1000)) {
           // then i want to start the instructions
           commit('setDisplayInstructions', 'block')
